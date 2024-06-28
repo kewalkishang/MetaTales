@@ -3,6 +3,7 @@ import { StyleSheet, Image, Platform,Text, View, TouchableOpacity, FlatList, Mod
 
 
 import React, { useState } from 'react';
+import { TabBarIcon } from '@/components/navigation/TabBarIcon';
 
 const personIcon = require('../../assets/images/man.png');
 
@@ -19,6 +20,21 @@ export default function ProfileScreen() {
       source={{ uri: item.uri }}
       style={{ flex: 1, height: undefined, width: undefined, resizeMode: 'cover' }}
     />
+       <View style={styles.overlayContainer}> 
+        <View style={{ width : "100%", flexDirection : 'row', justifyContent : 'space-around'}}>
+        <View style={{ flex : 1, flexDirection : 'row', alignItems : 'center'}}>
+       <TabBarIcon size={14} name="eye-outline" color="white" />
+        <Text style={styles.text}>2</Text>
+        </View>
+        </View>
+        </View>
+        <View style={styles.overlayContainerTop}> 
+        <View style={styles.iconsCol}>
+            <TabBarIcon size={18} name="image-outline" color="white" />
+        </View>
+        </View>
+     
+     
    </TouchableOpacity>
   );
 
@@ -122,6 +138,16 @@ export default function ProfileScreen() {
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <Image source={{ uri: selectedImageUri }} style={styles.fullImage} />
+            <View style={styles.overlayContainer}> 
+        <View style={{ width : "100%", flexDirection : 'row', justifyContent : 'space-around'}}>
+        <View style={{ flex : 1, flexDirection : 'column', alignItems : 'flex-start', justifyContent :'flex-end' }}>
+        <Text style={styles.text}>View</Text>
+        </View>
+        <View style={styles.iconsCol}>
+            <TabBarIcon name="chatbubble-outline" color="white" />
+        </View>
+        </View>
+      </View>
             <TouchableOpacity
               style={styles.buttonClose}
               onPress={() => setModalVisible(!modalVisible)}
@@ -192,8 +218,6 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     flex: 1,
-    marginTop : 20,
-    padding: 10,
   },
   gridContainer: {
     flexDirection: 'row',
@@ -206,9 +230,9 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   arcImage: {
-    width: '100%', // full width
-    height: 200,
-    marginBottom: 10,
+  flex: 1,
+    resizeMode: 'cover',
+    backgroundColor: 'blue', 
   },
   centeredView: {
     flex: 1,
@@ -246,5 +270,29 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: 'bold',
     textAlign: 'center',
+  },
+  overlayContainer: {
+    position: 'absolute',
+ // Adjust this value to ensure it's above the nav bar
+  bottom : 0,
+    left: 2,
+    
+  },
+  overlayContainerTop: {
+    position: 'absolute',
+ // Adjust this value to ensure it's above the nav bar
+    top : 0,
+ right : 2
+  
+  },
+  text: {
+    color: 'white',
+    fontSize: 10,
+    fontWeight: 'bold',
+  },
+  iconsCol: {
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
 });
