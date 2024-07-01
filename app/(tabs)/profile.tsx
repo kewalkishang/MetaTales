@@ -1,6 +1,6 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { StyleSheet, Image, Platform,Text, View, TouchableOpacity, FlatList, Modal } from 'react-native';
-
+import { Link, router } from 'expo-router';
 
 import React, { useState } from 'react';
 import { TabBarIcon } from '@/components/navigation/TabBarIcon';
@@ -77,9 +77,18 @@ export default function ProfileScreen() {
     setModalVisible(true);
   };
 
+
   return (
     <View style={styles.container}>
+      <View style={{ width : '100%', flexDirection : 'row', justifyContent : 'space-around', alignItems : 'center'}}> 
     <Text style={styles.username}>{username}</Text>
+    {/* <Link href="/personaForm"> */}
+    <TouchableOpacity onPress={() => {router.push('/personaScreen')}}>
+
+    <TabBarIcon size={28} name="accessibility-outline" color="black" />
+    </TouchableOpacity>
+    {/* </Link> */}
+    </View>
     <Image
       style={styles.profileImage}
       source={personIcon} // Replace with your image URL
