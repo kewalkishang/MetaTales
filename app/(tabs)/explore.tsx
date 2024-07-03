@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
-import { View, Text, Image, Pressable, StyleSheet } from 'react-native';
+import { View, Text, Image, Pressable, StyleSheet, TouchableOpacity} from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
+import { Button } from 'react-native-elements/dist/buttons/Button';
+import { UploadStory } from '@/api/uploadStory';
 
 export default function TabTwoScreen() {
   const [permissionCameraInfo, requestPermissionCamera] = ImagePicker.useCameraPermissions();
   const [permissionLibraryInfo, requestPermissionLibrary] = ImagePicker.useMediaLibraryPermissions();
   const [imageLink, setImageLink] = useState("");
+  const [base64m , setBase66m ] = useState<string | null | undefined>(null);
 
   const verifyPermissionCamera = async () => {
       if (permissionCameraInfo && permissionCameraInfo.granted) {
@@ -32,34 +35,43 @@ export default function TabTwoScreen() {
 
       
         const result = await ImagePicker.launchCameraAsync({
-          allowsEditing: true,
+          allowsEditing: false,
           aspect: [4, 3],
           quality: 1,
+          base64 : true,
       });
 
-      if (!result.canceled && result.assets) {
+      if (!result.canceled && result.assets  && result.assets[0].base64) {
+         console.log(result.assets[0].base64.slice(0, 20));
+          setBase66m(result.assets[0].base64);
           setImageLink(result.assets[0].uri); // Correctly accessing uri from the first asset
       }
   };
 
-  const pickFromLibraryHandler = async () => {
-      const hasPermission = await verifyPermissionLibrary();
-      if (!hasPermission) {
-          console.log("Library access denied.");
-          return;
-      }
+//   const pickFromLibraryHandler = async () => {
+//       const hasPermission = await verifyPermissionLibrary();
+//       if (!hasPermission) {
+//           console.log("Library access denied.");
+//           return;
+//       }
 
-      const result = await ImagePicker.launchImageLibraryAsync({
-          mediaTypes: ImagePicker.MediaTypeOptions.All,
-          allowsEditing: true,
-          aspect: [4, 3],
-          quality: 1,
-      });
+//       const result = await ImagePicker.launchImageLibraryAsync({
+//           mediaTypes: ImagePicker.MediaTypeOptions.All,
+//           allowsEditing: true,
+//           aspect: [4, 3],
+//           quality: 1,
+//       });
 
-      if (!result.canceled && result.assets) {
-          setImageLink(result.assets[0].uri); // Handle image URI correctly
-      }
-  };
+//       if (!result.canceled && result.assets) {
+//           setImageLink(result.assets[0].uri); // Handle image URI correctly
+//       }
+//   };
+
+
+  const sendPicture = async() => {
+    UploadStory(`data:image/jpeg;base64,${base64m}`);
+    
+  }
 
   return (
       <View style={styles.container}>
@@ -69,14 +81,19 @@ export default function TabTwoScreen() {
                       <Text style={styles.text}>Take a picture</Text>
                   </View>
               </Pressable>
-              <Pressable onPress={pickFromLibraryHandler} style={({ pressed }) => [{ opacity: pressed ? 0.6 : 1 }]}>
+              {/* <Pressable onPress={pickFromLibraryHandler} style={({ pressed }) => [{ opacity: pressed ? 0.6 : 1 }]}>
                   <View style={styles.button}>
                       <Text style={styles.text}>Choose from Library</Text>
                   </View>
-              </Pressable>
+              </Pressable> */}
           </View>
           {imageLink ? (
-              <Image source={{ uri: imageLink }} style={styles.preview} />
+             <View style={styles.preview}>
+              <Image source={{ uri: imageLink }}  style={{ width : '100%', height : '100%'}} />
+              <TouchableOpacity onPress={sendPicture} style={{ alignItems : 'center', marginBottom : 10}}>
+             <Text style={{ color : 'white'}}>Hello</Text>
+            </TouchableOpacity>
+            </View>
           ) : (
               <Text>No image selected</Text>
           )}

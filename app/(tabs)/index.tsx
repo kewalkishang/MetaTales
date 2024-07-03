@@ -2,6 +2,9 @@ import { Image, StyleSheet, TextInput , View, FlatList, Dimensions, SafeAreaView
 import React, { useState } from 'react';
 import { TabBarIcon } from '@/components/navigation/TabBarIcon';
 import { postPersona } from '../../api/persona'
+import { UploadStory } from '../../api/uploadStory'
+ const screenshot =  require("./../../assets/images/screenshot.jpg");
+
 
 const images = [
   { id: '1', uri: 'https://cdn.glitch.global/30af1d3b-4338-4f4a-a826-359ed81189cf/uki0lwy-360-panorama-view-park.jpeg?v=1678660202470', username : 'kewalkishang', hashtags : [ 'self', 'new']  },
@@ -28,10 +31,9 @@ export default function HomeScreen() {
 
   const handleLike = (id : string) => {
     console.log('Liked', id);
-    postPersona({
-      'username' : 'kewal',
-      'key1' : 'kewal1'
-    })
+
+
+
     // Update state or call backend
   };
   
