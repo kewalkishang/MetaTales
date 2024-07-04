@@ -1,8 +1,9 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { StyleSheet, Image, Platform,Text, View, TouchableOpacity, FlatList, Modal } from 'react-native';
+import { StyleSheet, Image, Platform,Text, View, TouchableOpacity, FlatList, Modal, ScrollView, Button } from 'react-native';
 import { Link, router } from 'expo-router';
+import { getAllStories } from '../../api/getStories'
 
-import React, { useState } from 'react';
+import React, { useState,  useEffect } from 'react';
 import { TabBarIcon } from '@/components/navigation/TabBarIcon';
 
 const personIcon = require('../../assets/images/man.png');
@@ -12,7 +13,39 @@ interface ImageItem {
   uri: string;
 }
 
+
 export default function ProfileScreen() {
+
+
+  const fetchData = async () => {
+    try {
+      const response = await getAllStories();
+      if (response.success) {
+        // Assuming response.data directly contains the imageURLs array
+        const imageItems: ImageItem[] = response.data.map((url: string) => ({
+          id: url,  // Assuming URL is unique and can be used as an ID
+          uri: url
+        }));
+        setImagesForTale(imageItems);
+        if(imageItems.length > 0)
+          {
+            setHasStories(true);
+          }
+      } else {
+        console.error("Failed to fetch data:", response.message);
+      }
+    } catch (error) {
+      console.error("Failed to fetch data:", error);
+    }
+  };
+
+  // useEffect to call fetchData on component mount
+  useEffect(() => {
+    //Comment it out if you are not testing stories.
+   //fetchData();
+  }, []);
+
+
 
   const renderImageItem = ({ item }: { item: ImageItem }) => (
      <TouchableOpacity onPress={() => handlePressImage(item.uri)} style={activeTab === 'tale' ? styles.taleImage : styles.arcImage}>
@@ -44,7 +77,7 @@ export default function ProfileScreen() {
   const following = 75;
   const likes = 3400;
 
-  const imagesForTale : ImageItem[]  = [
+  const imagesForTalePlaceholder : ImageItem[]  = [
     { id: '1', uri: 'https://cdn.glitch.global/30af1d3b-4338-4f4a-a826-359ed81189cf/uki0lwy-360-panorama-view-park.jpeg?v=1678660202470' },
     { id: '2', uri: 'https://cdn.glitch.global/30af1d3b-4338-4f4a-a826-359ed81189cf/uki0lwy-360-panorama-view-park.jpeg?v=1678660202470' },
     { id: '3', uri: 'https://cdn.glitch.global/30af1d3b-4338-4f4a-a826-359ed81189cf/uki0lwy-360-panorama-view-park.jpeg?v=1678660202470' },
@@ -70,7 +103,11 @@ export default function ProfileScreen() {
     // State to manage active tab
   const [activeTab, setActiveTab] = useState('tale');
   const [modalVisible, setModalVisible] = useState(false);
+  const [storiesVisible, setStoriesVisible] = useState(false);
   const [selectedImageUri, setSelectedImageUri] = useState('');
+  const [hasStories, setHasStories] = useState(false);
+
+  const [imagesForTale , setImagesForTale ] = useState<ImageItem[]>([]);
 
   const handlePressImage = (uri: string) => {
     setSelectedImageUri(uri);
@@ -89,10 +126,20 @@ export default function ProfileScreen() {
     </TouchableOpacity>
     {/* </Link> */}
     </View>
+    <TouchableOpacity 
+       onPress={hasStories ? () => setStoriesVisible(true) : undefined}
+      activeOpacity={hasStories ? 0.2 : 1}>
+     {/* <Link
+        href={{
+          pathname: "/storyViewScreen",
+          params: { images : ["https://cdn.glitch.global/30af1d3b-4338-4f4a-a826-359ed81189cf/uki0lwy-360-panorama-view-park.jpeg?v=1678660202470", "https://cdn.glitch.global/30af1d3b-4338-4f4a-a826-359ed81189cf/uki0lwy-360-panorama-view-park.jpeg?v=1678660202470"]}
+        }}> */}
     <Image
-      style={styles.profileImage}
+      style={hasStories ? styles.profileImageHighlighted : styles.profileImage}
       source={personIcon} // Replace with your image URL
     />
+    {/* </Link> */}
+    </TouchableOpacity>
     <View style={styles.statsContainer}>
       <View style={styles.statBox}>
         <Text style={styles.statLabel}>Followers</Text>
@@ -131,7 +178,7 @@ export default function ProfileScreen() {
       <View style={styles.contentContainer}>
          <FlatList
           key={activeTab}  // Dynamic key based on the active tab
-          data={activeTab === 'tale' ? imagesForTale : imagesForArc}
+          data={activeTab === 'tale' ? imagesForTalePlaceholder: imagesForArc}
           renderItem={renderImageItem}
           keyExtractor={item => `${activeTab}-${item.id}`} 
           numColumns={activeTab === 'tale' ? 3 : 3}
@@ -164,6 +211,28 @@ export default function ProfileScreen() {
               <Text style={styles.textStyle}>Close</Text>
             </TouchableOpacity>
           </View>
+        </View>
+      </Modal>
+      <Modal
+        animationType="slide"
+        transparent={false}
+        visible={storiesVisible}
+        onRequestClose={() => {
+          setStoriesVisible(!storiesVisible);
+        }}
+      >
+        <View style={styles.centeredView}>
+          <ScrollView horizontal={true} pagingEnabled={true} style={styles.scrollViewStyle}>
+            {imagesForTale.map((img) => (
+              <Image key={img.id} source={{ uri: img.uri }} style={styles.imageStyle} />
+            ))}
+          </ScrollView>
+          <Button title="Hide" onPress={() => {
+            console.log("Hide");
+            setStoriesVisible(false);}} />
+               <Button title="Create Comic" onPress={() => {
+        //    console.log("Create");
+            }} />
         </View>
       </Modal>
       </View>
@@ -304,4 +373,22 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
   },
+  profileImageHighlighted: {
+    width: 150,
+    height: 150,
+    borderRadius: 75, // Half of the width/height to create circle
+    borderWidth: 5,
+    borderColor: 'blue', // Highlight color
+  },
+  scrollViewStyle: {
+    width: '100%',
+    height: '80%',
+  },
+  imageStyle: {
+    width: 300, // Set image width
+    height: 300, // Set image height
+    resizeMode: 'contain',
+    margin: 10,
+  },
+
 });

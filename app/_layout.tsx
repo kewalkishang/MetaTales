@@ -4,6 +4,8 @@ import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import 'react-native-reanimated';
+import StoryViewScreen from './storyViewScreen';
+
 //import personaScreen from '../app/personaForm/personaScreen'
 
 import { useColorScheme } from '@/hooks/useColorScheme';
@@ -32,7 +34,7 @@ export default function RootLayout() {
       <Stack>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="+not-found" />
-        {/* <Stack.Screen name="/personaForm" options={{ title: 'Fill Form' }}/> */}
+        {/* <Stack.Screen name="StoryViewScreen" component={StoryViewScreen}/> */}
       </Stack>
     </ThemeProvider>
   );

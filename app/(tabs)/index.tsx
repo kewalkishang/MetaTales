@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { TabBarIcon } from '@/components/navigation/TabBarIcon';
 import { postPersona } from '../../api/persona'
 import { UploadStory } from '../../api/uploadStory'
+import { getAllStories } from '../../api/getStories'
  const screenshot =  require("./../../assets/images/screenshot.jpg");
 
 
@@ -31,8 +32,6 @@ export default function HomeScreen() {
 
   const handleLike = (id : string) => {
     console.log('Liked', id);
-
-
 
     // Update state or call backend
   };
