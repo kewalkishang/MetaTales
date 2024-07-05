@@ -2,6 +2,8 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { StyleSheet, Image, Platform,Text, View, TouchableOpacity, FlatList, Modal, ScrollView, Button } from 'react-native';
 import { Link, router } from 'expo-router';
 import { getAllStories } from '../../api/getStories'
+import { createComic } from '../../api/createComic'
+import { getAllComics } from '../../api/getComic'
 
 import React, { useState,  useEffect } from 'react';
 import { TabBarIcon } from '@/components/navigation/TabBarIcon';
@@ -22,11 +24,14 @@ export default function ProfileScreen() {
       const response = await getAllStories();
       if (response.success) {
         // Assuming response.data directly contains the imageURLs array
-        const imageItems: ImageItem[] = response.data.map((url: string) => ({
+        const imageItems: ImageItem[] = response.img.map((url: string) => ({
           id: url,  // Assuming URL is unique and can be used as an ID
           uri: url
         }));
-        setImagesForTale(imageItems);
+
+        setImgData(response.data);
+
+        setImagesForStories(imageItems);
         if(imageItems.length > 0)
           {
             setHasStories(true);
@@ -42,9 +47,41 @@ export default function ProfileScreen() {
   // useEffect to call fetchData on component mount
   useEffect(() => {
     //Comment it out if you are not testing stories.
-   //fetchData();
+   fetchData();
   }, []);
 
+  const fetchComicData = async () => {
+    try {
+      const response = await getAllComics();
+      if (response.success) {
+        // Assuming response.data directly contains the imageURLs array
+        const imageItems: ImageItem[] = response.img.map((url: string) => ({
+          id: url,  // Assuming URL is unique and can be used as an ID
+          uri: url,
+          username : 'kewalkishang', 
+          hashtags : [ 'self', 'new']
+        }));
+
+       // setImgData(response.data);
+
+        setImagesForTale(imageItems);
+        if(imageItems.length > 0)
+          {
+           // setHasStories(true);
+          }
+      } else {
+        console.error("Failed to fetch data:", response.message);
+      }
+    } catch (error) {
+      console.error("Failed to fetch data:", error);
+    }
+  };
+
+    // useEffect to call fetchData on component mount
+    useEffect(() => {
+      //Comment it out if you are not testing stories.
+     fetchComicData();
+    }, []);
 
 
   const renderImageItem = ({ item }: { item: ImageItem }) => (
@@ -77,20 +114,20 @@ export default function ProfileScreen() {
   const following = 75;
   const likes = 3400;
 
-  const imagesForTalePlaceholder : ImageItem[]  = [
-    { id: '1', uri: 'https://cdn.glitch.global/30af1d3b-4338-4f4a-a826-359ed81189cf/uki0lwy-360-panorama-view-park.jpeg?v=1678660202470' },
-    { id: '2', uri: 'https://cdn.glitch.global/30af1d3b-4338-4f4a-a826-359ed81189cf/uki0lwy-360-panorama-view-park.jpeg?v=1678660202470' },
-    { id: '3', uri: 'https://cdn.glitch.global/30af1d3b-4338-4f4a-a826-359ed81189cf/uki0lwy-360-panorama-view-park.jpeg?v=1678660202470' },
-    { id: '4', uri: 'https://cdn.glitch.global/30af1d3b-4338-4f4a-a826-359ed81189cf/uki0lwy-360-panorama-view-park.jpeg?v=1678660202470' },
-    { id: '5', uri: 'https://cdn.glitch.global/30af1d3b-4338-4f4a-a826-359ed81189cf/uki0lwy-360-panorama-view-park.jpeg?v=1678660202470' },
-    { id: '6', uri: 'https://cdn.glitch.global/30af1d3b-4338-4f4a-a826-359ed81189cf/uki0lwy-360-panorama-view-park.jpeg?v=1678660202470' },
-    { id: '7', uri: 'https://cdn.glitch.global/30af1d3b-4338-4f4a-a826-359ed81189cf/uki0lwy-360-panorama-view-park.jpeg?v=1678660202470' },
-    { id: '8', uri: 'https://cdn.glitch.global/30af1d3b-4338-4f4a-a826-359ed81189cf/uki0lwy-360-panorama-view-park.jpeg?v=1678660202470' },
-    { id: '9', uri: 'https://cdn.glitch.global/30af1d3b-4338-4f4a-a826-359ed81189cf/uki0lwy-360-panorama-view-park.jpeg?v=1678660202470' },
-    { id: '10', uri: 'https://cdn.glitch.global/30af1d3b-4338-4f4a-a826-359ed81189cf/uki0lwy-360-panorama-view-park.jpeg?v=1678660202470' },
-    { id: '11', uri: 'https://cdn.glitch.global/30af1d3b-4338-4f4a-a826-359ed81189cf/uki0lwy-360-panorama-view-park.jpeg?v=1678660202470' },
-    { id: '12', uri: 'https://cdn.glitch.global/30af1d3b-4338-4f4a-a826-359ed81189cf/uki0lwy-360-panorama-view-park.jpeg?v=1678660202470' },
-  ];
+  // const imagesForTalePlaceholder : ImageItem[]  = [
+  //   { id: '1', uri: 'https://cdn.glitch.global/30af1d3b-4338-4f4a-a826-359ed81189cf/uki0lwy-360-panorama-view-park.jpeg?v=1678660202470' },
+  //   { id: '2', uri: 'https://cdn.glitch.global/30af1d3b-4338-4f4a-a826-359ed81189cf/uki0lwy-360-panorama-view-park.jpeg?v=1678660202470' },
+  //   { id: '3', uri: 'https://cdn.glitch.global/30af1d3b-4338-4f4a-a826-359ed81189cf/uki0lwy-360-panorama-view-park.jpeg?v=1678660202470' },
+  //   { id: '4', uri: 'https://cdn.glitch.global/30af1d3b-4338-4f4a-a826-359ed81189cf/uki0lwy-360-panorama-view-park.jpeg?v=1678660202470' },
+  //   { id: '5', uri: 'https://cdn.glitch.global/30af1d3b-4338-4f4a-a826-359ed81189cf/uki0lwy-360-panorama-view-park.jpeg?v=1678660202470' },
+  //   { id: '6', uri: 'https://cdn.glitch.global/30af1d3b-4338-4f4a-a826-359ed81189cf/uki0lwy-360-panorama-view-park.jpeg?v=1678660202470' },
+  //   { id: '7', uri: 'https://cdn.glitch.global/30af1d3b-4338-4f4a-a826-359ed81189cf/uki0lwy-360-panorama-view-park.jpeg?v=1678660202470' },
+  //   { id: '8', uri: 'https://cdn.glitch.global/30af1d3b-4338-4f4a-a826-359ed81189cf/uki0lwy-360-panorama-view-park.jpeg?v=1678660202470' },
+  //   { id: '9', uri: 'https://cdn.glitch.global/30af1d3b-4338-4f4a-a826-359ed81189cf/uki0lwy-360-panorama-view-park.jpeg?v=1678660202470' },
+  //   { id: '10', uri: 'https://cdn.glitch.global/30af1d3b-4338-4f4a-a826-359ed81189cf/uki0lwy-360-panorama-view-park.jpeg?v=1678660202470' },
+  //   { id: '11', uri: 'https://cdn.glitch.global/30af1d3b-4338-4f4a-a826-359ed81189cf/uki0lwy-360-panorama-view-park.jpeg?v=1678660202470' },
+  //   { id: '12', uri: 'https://cdn.glitch.global/30af1d3b-4338-4f4a-a826-359ed81189cf/uki0lwy-360-panorama-view-park.jpeg?v=1678660202470' },
+  // ];
 
   const imagesForArc :  ImageItem[]  = [
     { id: '1', uri: 'https://cdn.glitch.global/30af1d3b-4338-4f4a-a826-359ed81189cf/uki0lwy-360-panorama-view-park.jpeg?v=1678660202470' },
@@ -106,7 +143,8 @@ export default function ProfileScreen() {
   const [storiesVisible, setStoriesVisible] = useState(false);
   const [selectedImageUri, setSelectedImageUri] = useState('');
   const [hasStories, setHasStories] = useState(false);
-
+  const [imgData, setImgData] = useState([]);
+  const [imagesForStories , setImagesForStories ] = useState<ImageItem[]>([]);
   const [imagesForTale , setImagesForTale ] = useState<ImageItem[]>([]);
 
   const handlePressImage = (uri: string) => {
@@ -178,7 +216,7 @@ export default function ProfileScreen() {
       <View style={styles.contentContainer}>
          <FlatList
           key={activeTab}  // Dynamic key based on the active tab
-          data={activeTab === 'tale' ? imagesForTalePlaceholder: imagesForArc}
+          data={activeTab === 'tale' ? imagesForTale : imagesForArc}
           renderItem={renderImageItem}
           keyExtractor={item => `${activeTab}-${item.id}`} 
           numColumns={activeTab === 'tale' ? 3 : 3}
@@ -223,7 +261,7 @@ export default function ProfileScreen() {
       >
         <View style={styles.centeredView}>
           <ScrollView horizontal={true} pagingEnabled={true} style={styles.scrollViewStyle}>
-            {imagesForTale.map((img) => (
+            {imagesForStories.map((img) => (
               <Image key={img.id} source={{ uri: img.uri }} style={styles.imageStyle} />
             ))}
           </ScrollView>
@@ -232,6 +270,7 @@ export default function ProfileScreen() {
             setStoriesVisible(false);}} />
                <Button title="Create Comic" onPress={() => {
         //    console.log("Create");
+        createComic(imgData);
             }} />
         </View>
       </Modal>
@@ -303,8 +342,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   taleImage: {
-    width: '32%', // slightly less than one-third
+    width: '50%', // slightly less than one-third
     height: 100,
+    resizeMode:'contain',
     marginBottom: 10,
   },
   arcImage: {

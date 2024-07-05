@@ -2,8 +2,8 @@ import axios from 'axios';
 //import Config from 'react-native-config';
 
 // Function to put an item into a DynamoDB table - calls our backend 
-export const getAllStories = async () => {
-    console.log("Getting all stories");
+export const getAllComics = async () => {
+    console.log("Getting all comics");
     const username = "DefaultUsername";
 
     const currtime = "Time";
@@ -23,7 +23,7 @@ export const getAllStories = async () => {
 
     // Attempt to add the item to the DynamoDB table
     try {
-        const response = await axios.get(process.env.EXPO_PUBLIC_GETSTORY_API_ENDPOINT, updatedData);
+        const response = await axios.get(process.env.EXPO_PUBLIC_COMIC_API_ENDPOINT, updatedData);
         console.log('Response :', response.data);
         const parsedData = JSON.parse(response.data.body);
 
@@ -40,9 +40,9 @@ export const getAllStories = async () => {
         .map(item => item.imageURL.S);  // Extract imageURLs
 
 
-        // Extracting messages from all items
- //const messages = parsedData.items[0].data.M.choices.L[0].M.message.M.content.S;
- const messages = extractAllMessages(parsedData);
+//         // Extracting messages from all items
+//  //const messages = parsedData.items[0].data.M.choices.L[0].M.message.M.content.S;
+//  const messages = extractAllMessages(parsedData);
 
 
         const bucketBaseUrl = process.env.EXPO_PUBLIC_S3_ENDPOINT;
@@ -55,7 +55,7 @@ const fullImageUrls = imageURLs.map(filename => {
 });
 
       console.log('Image URLs for', username, ':', fullImageUrls);
-        return { success: true, message: "Stories fetched successfully!", img: fullImageUrls, data :  messages };;
+        return { success: true, message: "Stories fetched successfully!", img: fullImageUrls};;
     } catch (error) {
         console.error('Error:', error.message);
         return { success: false, message: error.message };

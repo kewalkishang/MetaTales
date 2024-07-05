@@ -1,10 +1,19 @@
 import { Image, StyleSheet, TextInput , View, FlatList, Dimensions, SafeAreaView , StatusBar,  TouchableOpacity, Text} from 'react-native';
-import React, { useState } from 'react';
+import React, { useState , useEffect } from 'react';
 import { TabBarIcon } from '@/components/navigation/TabBarIcon';
 import { postPersona } from '../../api/persona'
 import { UploadStory } from '../../api/uploadStory'
-import { getAllStories } from '../../api/getStories'
+import { getAllComics } from '../../api/getComic'
+import { createComic } from '../../api/createComic'
  const screenshot =  require("./../../assets/images/screenshot.jpg");
+
+
+ interface ImageItem {
+  id: string;
+  uri: string;
+  username : string,
+  hashtags : string[]
+}
 
 
 const images = [
@@ -30,9 +39,44 @@ const { width, height } = Dimensions.get('window');
 
 export default function HomeScreen() {
 
+  const [imagesForTale , setImagesForTale ] = useState<ImageItem[]>([]);
+
+  const fetchData = async () => {
+    try {
+      const response = await getAllComics();
+      if (response.success) {
+        // Assuming response.data directly contains the imageURLs array
+        const imageItems: ImageItem[] = response.img.map((url: string) => ({
+          id: url,  // Assuming URL is unique and can be used as an ID
+          uri: url,
+          username : 'kewalkishang', 
+          hashtags : [ 'self', 'new']
+        }));
+
+       // setImgData(response.data);
+
+        setImagesForTale(imageItems);
+        if(imageItems.length > 0)
+          {
+           // setHasStories(true);
+          }
+      } else {
+        console.error("Failed to fetch data:", response.message);
+      }
+    } catch (error) {
+      console.error("Failed to fetch data:", error);
+    }
+  };
+
+  // useEffect to call fetchData on component mount
+  useEffect(() => {
+    //Comment it out if you are not testing stories.
+   fetchData();
+  }, []);
+
   const handleLike = (id : string) => {
     console.log('Liked', id);
-
+  
     // Update state or call backend
   };
   
@@ -106,12 +150,13 @@ export default function HomeScreen() {
     imageContainer: {
       width : '100%',
       height : 600,
-      backgroundColor: 'blue',
+      backgroundColor: 'black',
     },
     image: {
-      flex: 1,
+      // flex: 1,
        width : '100%',
        height : '100%', // This ensures the image covers the full area of the view
+       resizeMode:'contain',
     },
     overlayContainer: {
       position: 'absolute',
@@ -159,7 +204,7 @@ export default function HomeScreen() {
         </TouchableOpacity>
     </View>
     <FlatList
-  data={images}
+  data={imagesForTale}
   keyExtractor={item => item.id}
   renderItem={renderItem}
   showsVerticalScrollIndicator={true}
