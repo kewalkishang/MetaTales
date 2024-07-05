@@ -45,18 +45,18 @@ export default function ProfileScreen() {
   const likes = 3400;
 
   const imagesForTale : ImageItem[]  = [
-    { id: '1', uri: 'https://cdn.glitch.global/30af1d3b-4338-4f4a-a826-359ed81189cf/uki0lwy-360-panorama-view-park.jpeg?v=1678660202470' },
-    { id: '2', uri: 'https://cdn.glitch.global/30af1d3b-4338-4f4a-a826-359ed81189cf/uki0lwy-360-panorama-view-park.jpeg?v=1678660202470' },
-    { id: '3', uri: 'https://cdn.glitch.global/30af1d3b-4338-4f4a-a826-359ed81189cf/uki0lwy-360-panorama-view-park.jpeg?v=1678660202470' },
-    { id: '4', uri: 'https://cdn.glitch.global/30af1d3b-4338-4f4a-a826-359ed81189cf/uki0lwy-360-panorama-view-park.jpeg?v=1678660202470' },
-    { id: '5', uri: 'https://cdn.glitch.global/30af1d3b-4338-4f4a-a826-359ed81189cf/uki0lwy-360-panorama-view-park.jpeg?v=1678660202470' },
-    { id: '6', uri: 'https://cdn.glitch.global/30af1d3b-4338-4f4a-a826-359ed81189cf/uki0lwy-360-panorama-view-park.jpeg?v=1678660202470' },
-    { id: '7', uri: 'https://cdn.glitch.global/30af1d3b-4338-4f4a-a826-359ed81189cf/uki0lwy-360-panorama-view-park.jpeg?v=1678660202470' },
-    { id: '8', uri: 'https://cdn.glitch.global/30af1d3b-4338-4f4a-a826-359ed81189cf/uki0lwy-360-panorama-view-park.jpeg?v=1678660202470' },
-    { id: '9', uri: 'https://cdn.glitch.global/30af1d3b-4338-4f4a-a826-359ed81189cf/uki0lwy-360-panorama-view-park.jpeg?v=1678660202470' },
-    { id: '10', uri: 'https://cdn.glitch.global/30af1d3b-4338-4f4a-a826-359ed81189cf/uki0lwy-360-panorama-view-park.jpeg?v=1678660202470' },
-    { id: '11', uri: 'https://cdn.glitch.global/30af1d3b-4338-4f4a-a826-359ed81189cf/uki0lwy-360-panorama-view-park.jpeg?v=1678660202470' },
-    { id: '12', uri: 'https://cdn.glitch.global/30af1d3b-4338-4f4a-a826-359ed81189cf/uki0lwy-360-panorama-view-park.jpeg?v=1678660202470' },
+    { id: '1', uri: 'https://images.unsplash.com/photo-1512757776214-26d36777b513?q=80&w=3087&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' },
+    { id: '2', uri: 'https://images.unsplash.com/photo-1530907487668-af02f65b4afe?q=80&w=3087&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' },
+    { id: '3', uri: 'https://images.unsplash.com/photo-1501426026826-31c667bdf23d?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fHN1bW1lcnxlbnwwfHwwfHx8MA%3D%3D' },
+    { id: '4', uri: 'https://images.unsplash.com/photo-1576506295286-5cda18df43e7?q=80&w=3024&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' },
+    { id: '5', uri: 'https://plus.unsplash.com/premium_photo-1663133679087-bc5deb50ab00?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8YmVhY2h8ZW58MHx8MHx8fDA%3D' },
+    { id: '6', uri: 'https://plus.unsplash.com/premium_photo-1676517030094-3a49a6d598e6?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mzd8fGJlYWNofGVufDB8fDB8fHww' },
+    { id: '7', uri: 'https://images.unsplash.com/photo-1542224566-6e85f2e6772f?q=80&w=3088&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' },
+    { id: '8', uri: 'https://plus.unsplash.com/premium_photo-1669748158361-d0f740b80b08?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mzd8fG1vdW50YWluc3xlbnwwfHwwfHx8MA%3D%3D' },
+    { id: '9', uri: 'https://plus.unsplash.com/premium_photo-1673736135967-1c9aaa4aa7f8?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8aGlrZXxlbnwwfHwwfHx8MA%3D%3D' },
+    // { id: '10', uri: 'https://cdn.glitch.global/30af1d3b-4338-4f4a-a826-359ed81189cf/uki0lwy-360-panorama-view-park.jpeg?v=1678660202470' },
+    // { id: '11', uri: 'https://cdn.glitch.global/30af1d3b-4338-4f4a-a826-359ed81189cf/uki0lwy-360-panorama-view-park.jpeg?v=1678660202470' },
+    // { id: '12', uri: 'https://cdn.glitch.global/30af1d3b-4338-4f4a-a826-359ed81189cf/uki0lwy-360-panorama-view-park.jpeg?v=1678660202470' },
   ];
 
   const imagesForArc :  ImageItem[]  = [
@@ -109,24 +109,25 @@ export default function ProfileScreen() {
         <Text style={styles.statNumber}>{likes}</Text>    
       </View>
     </View>
-    <View style={styles.tabsContainer}>
-        <TouchableOpacity
-          style={[styles.tab, activeTab === 'tale' && styles.activeTab]}
-          onPress={() => setActiveTab('tale')}
-        >
-          <Text style={styles.tabText}>Tale</Text>
-        </TouchableOpacity>
+    {/* <View style={styles.tabRow}> */}
+      <View style={styles.tabsContainer}>
+          <TouchableOpacity
+            style={[styles.tab, activeTab === 'tale' && styles.activeTab]}
+            onPress={() => setActiveTab('tale')}
+          >
+            <Text style={styles.tabText}>Tale</Text>
+          </TouchableOpacity>
+        
       
-    
 
-        <TouchableOpacity
-          style={[styles.tab, activeTab === 'arc' && styles.activeTab]}
-          onPress={() => setActiveTab('arc')}
-        >
-          <Text style={styles.tabText}>Arc</Text>
-        </TouchableOpacity>
-      </View>
-    
+          <TouchableOpacity
+            style={[styles.tab, activeTab === 'arc' && styles.activeTab]}
+            onPress={() => setActiveTab('arc')}
+          >
+            <Text style={styles.tabText}>Arc</Text>
+          </TouchableOpacity>
+        </View>
+    {/* </View> */}
       {/* Content based on active tab */}
       <View style={styles.contentContainer}>
          <FlatList
@@ -179,6 +180,9 @@ const styles = StyleSheet.create({
     paddingTop: 50, // Adjust based on your screen size
     backgroundColor: '#fff', // Background color
   },
+  tabRow: {
+    flexDirection: 'column',
+  },
   username: {
     fontSize: 24,
     fontWeight: 'bold',
@@ -216,6 +220,7 @@ const styles = StyleSheet.create({
   },
   tab: {
     padding: 10,
+    // marginLeft: 20,
     borderBottomWidth: 2,
     borderBottomColor: 'transparent',
   },
