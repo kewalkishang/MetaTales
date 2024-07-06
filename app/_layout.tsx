@@ -9,6 +9,7 @@ import StoryViewScreen from './storyViewScreen';
 //import personaScreen from '../app/personaForm/personaScreen'
 
 import { useColorScheme } from '@/hooks/useColorScheme';
+import { color } from 'react-native-elements/dist/helpers';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -32,7 +33,7 @@ export default function RootLayout() {
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }}/>
         <Stack.Screen name="+not-found" />
         {/* <Stack.Screen name="StoryViewScreen" component={StoryViewScreen}/> */}
       </Stack>
