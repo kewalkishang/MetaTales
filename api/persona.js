@@ -10,12 +10,13 @@ export const postPersona = async (data) => {
     //     alert("Please login again!");
     //     return;
     // }
-    const username = "DefaultUsername";
+    const username = data.username;
+    const fData = data.formD;
 
     const updatedData = {
         username: username,
         method : "POST",
-        ...data
+        ...fData
     };
 
     const config = {

@@ -2,9 +2,9 @@ import axios from 'axios';
 //import Config from 'react-native-config';
 
 // Function to put an item into a DynamoDB table - calls our backend 
-export const getAllComics = async () => {
+export const getAllComics = async (data) => {
     console.log("Getting all comics");
-    const username = "DefaultUsername";
+    const username = data.username;
 
     const currtime = "Time";
 
@@ -36,7 +36,7 @@ export const getAllComics = async () => {
 
 
         const imageURLs = parsedData.items
-        .filter(item => item.username && item.username.S === username && isFromToday(item.id.S))  // Check if the username matches
+        .filter(item => item.username && item.username.S === username)  // Check if the username matches
         .map(item => item.imageURL.S);  // Extract imageURLs
 
 

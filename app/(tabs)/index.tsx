@@ -1,11 +1,10 @@
 import { Image, StyleSheet, TextInput , View, FlatList, Dimensions, SafeAreaView , StatusBar,  TouchableOpacity, Text} from 'react-native';
-import React, { useState , useEffect } from 'react';
+import React, { useState , useEffect, useContext } from 'react';
 import { TabBarIcon } from '@/components/navigation/TabBarIcon';
-import { postPersona } from '../../api/persona'
-import { UploadStory } from '../../api/uploadStory'
+
 import { getAllComics } from '../../api/getComic'
-import { createComic } from '../../api/createComic'
- const screenshot =  require("./../../assets/images/screenshot.jpg");
+import { AuthContext } from '../../context/AuthContext';
+//import { createComic } from '../../api/createComic'
 
 
  interface ImageItem {
@@ -38,12 +37,12 @@ const { width, height } = Dimensions.get('window');
 
 
 export default function HomeScreen() {
-
+  const { user } = useContext(AuthContext);
   const [imagesForTale , setImagesForTale ] = useState<ImageItem[]>([]);
 
   const fetchData = async () => {
     try {
-      const response = await getAllComics();
+      const response = await getAllComics({username : user});
       if (response.success) {
         // Assuming response.data directly contains the imageURLs array
         const imageItems: ImageItem[] = response.img.map((url: string) => ({
