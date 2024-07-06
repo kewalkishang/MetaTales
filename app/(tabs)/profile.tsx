@@ -9,7 +9,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { TabBarIcon } from '@/components/navigation/TabBarIcon';
 import { AuthContext } from '../../context/AuthContext';
 
-const personIcon = require('../../assets/images/man.png');
+const personIcon = require('../../assets/images/file.jpg');
 import { TabView, SceneMap } from 'react-native-tab-view';
 
 interface ImageItem {
@@ -195,7 +195,7 @@ export default function ProfileScreen() {
         }}> */}
         <Image
           style={hasStories ? styles.profileImageHighlighted : styles.profileImage}
-          source={personIcon} // Replace with your image URL
+          source={personIcon}// Replace with your image URL
         />
         {/* </Link> */}
       </TouchableOpacity>
@@ -345,10 +345,10 @@ export default function ProfileScreen() {
         marginVertical: 10,
   },
         profileImage: {
-          width: 150,
+        width: 150,
         height: 150,
         borderRadius: 75, // Half of the width/height to create circle
-        borderWidth: 3,
+        borderWidth: 2,
         borderColor: '#333', // Border color
   },
         scene: {

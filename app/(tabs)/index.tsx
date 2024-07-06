@@ -38,7 +38,7 @@ interface PostItem {
 // Get the full width of the device screen
 const { width, height } = Dimensions.get('window');
 
-
+const topImage = require("../../assets/images/comic.jpg");
 
 
 export default function HomeScreen() {
@@ -102,13 +102,13 @@ export default function HomeScreen() {
         <Text style={styles.text}>#{item.hashtags.join(' #')}</Text>
         </View>
         <View style={styles.iconsCol}>
-          <TouchableOpacity onPress={() => handleLike(item.id)} style={{ alignItems : 'center', marginBottom : 10}}>
-            <TabBarIcon name="heart-outline" color="white" />
+          <TouchableOpacity onPress={() => handleLike(item.id)} style={{ alignItems : 'center'}}>
+            <TabBarIcon name="heart-outline" color="black" size={32}/>
             <Text style={styles.text}>12</Text>
           </TouchableOpacity>
  
           <TouchableOpacity onPress={() => handleComment(item.id)} style={{ alignItems : 'center' }}>
-            <TabBarIcon name="chatbubble-outline" color="white" />
+            <TabBarIcon name="chatbubble-outline" color="black" size={32}/>
             <Text style={styles.text}>2</Text>
           </TouchableOpacity>
         </View>
@@ -123,6 +123,7 @@ export default function HomeScreen() {
       flex: 1, // Takes full height of the screen
       marginTop:StatusBar.currentHeight,
       marginBottom : StatusBar.currentHeight,
+      backgroundColor: 'white'
     },
     button: {
       position: 'absolute',
@@ -135,29 +136,31 @@ export default function HomeScreen() {
       flex :  1
     },
     buttonText: {
-      color: 'white'
+      color: 'black'
     },
     container: {
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'space-between',
-      padding: 10,
-      backgroundColor: '#000',
+      paddingVertical: 10,
+      paddingHorizontal: 5,
+      backgroundColor: 'white',
     },
     input: {
       flex: 4,
       height: 40,
-      borderColor: 'gray',
-      borderWidth: 0.2,
-      marginRight: 10,
+      // borderColor: 'gray',
+      // borderWidth: 0.2,
+      // marginRight: 10,
       paddingHorizontal: 10,
-      backgroundColor: '#E6E6E6',
+      backgroundColor: '#F1F1F1',
       borderRadius: 30
     },
     imageContainer: {
       width : '100%',
       height : 600,
-      backgroundColor: 'black',
+      backgroundColor: 'white'
+      // marginBottom: 50,
     },
     image: {
       // flex: 1,
@@ -167,15 +170,14 @@ export default function HomeScreen() {
     },
     overlayContainer: {
       position: 'absolute',
-      bottom: 50, // Adjust this value to ensure it's above the nav bar
+      bottom: 45, // Adjust this value to ensure it's above the nav bar
       left: 0,
       right: 0,
       flexDirection: 'row',
       padding: 10,
-    
     },
     text: {
-      color: 'white',
+      color: 'black',
       fontSize: 16,
       fontWeight: 'bold',
     },
@@ -185,6 +187,18 @@ export default function HomeScreen() {
       alignContent: 'center',
       justifyContent: 'space-between',
     },
+    topImage: {
+      width: '100%',
+      height: '100%',
+      resizeMode:'contain'
+    },
+    topContainer: {
+      width: '100%',
+      height: '8%',
+      paddingVertical: 10,
+      backgroundColor: 'white',
+      justifyContent: "flex-start"
+    }
   });
 
   const [search, setSearch] = useState('');
@@ -198,30 +212,32 @@ export default function HomeScreen() {
   };
 
   return (
-    <SafeAreaView style={styles.safeArea} > 
-
-           <View style={styles.container}>
-      <TextInput
-        style={styles.input}
-        placeholder="Type Here..."
-        value={search}
-        onChangeText={updateSearch}
-      />
-         <TouchableOpacity onPress={handleSearchPress} style={styles.button}>
-         <TabBarIcon name={ 'search-outline' } color={'black'} />
+    <SafeAreaView style={styles.safeArea} >
+      <View style={styles.topContainer}>
+        <Image source={topImage} style={styles.topImage}></Image>
+      </View>
+      <View style={styles.container}>
+        <TextInput
+          style={styles.input}
+          placeholder="Type Here..."
+          value={search}
+          onChangeText={updateSearch}
+        />
+        <TouchableOpacity onPress={handleSearchPress} style={styles.button}>
+          <TabBarIcon name={ 'search-outline' } color={'black'} />
         </TouchableOpacity>
-    </View>
-    <FlatList
-  data={imagesForTale}
-  keyExtractor={item => item.id}
-  renderItem={renderItem}
-  showsVerticalScrollIndicator={true}
-  pagingEnabled  // Enables native paging behavior
-  showsHorizontalScrollIndicator={false}  // Hides the horizontal scroll bar
-  snapToAlignment="start"
-  snapToInterval={650}  // Snap interval to the width of the screen
-  decelerationRate="fast"
-/>
+     </View>
+      <FlatList
+    data={imagesForTale}
+    keyExtractor={item => item.id}
+    renderItem={renderItem}
+    showsVerticalScrollIndicator={true}
+    pagingEnabled  // Enables native paging behavior
+    showsHorizontalScrollIndicator={false}  // Hides the horizontal scroll bar
+    snapToAlignment="center"
+    snapToInterval={600}  // Snap interval to the width of the screen
+    decelerationRate="fast"
+  />
  
   </SafeAreaView>
   );
