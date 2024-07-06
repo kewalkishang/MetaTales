@@ -14,6 +14,7 @@ export const postPersona = async (data) => {
 
     const updatedData = {
         username: username,
+        method : "POST",
         ...data
     };
 

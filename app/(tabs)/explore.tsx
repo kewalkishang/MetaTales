@@ -71,7 +71,7 @@ export default function TabTwoScreen() {
       }
         const result = await ImagePicker.launchCameraAsync({
           allowsEditing: false,
-          aspect: [4,3],
+          aspect: [4, 3],
           quality: 0.5,
           base64 : true,
       });
