@@ -1,12 +1,21 @@
-import { Tabs } from 'expo-router';
-import React from 'react';
+import { Tabs, Redirect, } from 'expo-router';
+import React, { useContext } from 'react';
 
 import { TabBarIcon } from '@/components/navigation/TabBarIcon';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
+import { AuthContext } from '../../context/AuthContext';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
+
+  const { isSignedIn } = useContext(AuthContext);
+
+  if (!isSignedIn) {
+    console.log("TRYING ");
+    return <Redirect href="/signin" />;
+  }
+
 
   return (
     <Tabs

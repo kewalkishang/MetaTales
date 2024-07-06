@@ -5,8 +5,9 @@ import { getAllStories } from '../../api/getStories'
 import { createComic } from '../../api/createComic'
 import { getAllComics } from '../../api/getComic'
 
-import React, { useState,  useEffect } from 'react';
+import React, { useState,  useEffect, useContext } from 'react';
 import { TabBarIcon } from '@/components/navigation/TabBarIcon';
+import { AuthContext } from '../../context/AuthContext';
 
 const personIcon = require('../../assets/images/man.png');
 
@@ -18,10 +19,11 @@ interface ImageItem {
 
 export default function ProfileScreen() {
 
+  const { user } = useContext(AuthContext);
 
   const fetchData = async () => {
     try {
-      const response = await getAllStories();
+      const response = await getAllStories({username : user});
       if (response.success) {
         // Assuming response.data directly contains the imageURLs array
         const imageItems: ImageItem[] = response.img.map((url: string) => ({
@@ -52,7 +54,7 @@ export default function ProfileScreen() {
 
   const fetchComicData = async () => {
     try {
-      const response = await getAllComics();
+      const response = await getAllComics({username : user});
       if (response.success) {
         // Assuming response.data directly contains the imageURLs array
         const imageItems: ImageItem[] = response.img.map((url: string) => ({
@@ -156,7 +158,7 @@ export default function ProfileScreen() {
   return (
     <View style={styles.container}>
       <View style={{ width : '100%', flexDirection : 'row', justifyContent : 'space-around', alignItems : 'center'}}> 
-    <Text style={styles.username}>{username}</Text>
+    <Text style={styles.username}>{user}</Text>
     {/* <Link href="/personaForm"> */}
     <TouchableOpacity onPress={() => {router.push('/personaScreen')}}>
 
@@ -270,7 +272,7 @@ export default function ProfileScreen() {
             setStoriesVisible(false);}} />
                <Button title="Create Comic" onPress={() => {
         //    console.log("Create");
-        createComic(imgData);
+        createComic({username : user, stories: imgData});
             }} />
         </View>
       </Modal>

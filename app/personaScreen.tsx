@@ -1,9 +1,11 @@
-import React , {useState} from 'react';
+import React , {useState, useContext} from 'react';
 import {  View, Text, TextInput, Button, StyleSheet, ScrollView , Image} from 'react-native';
 import { postPersona } from '@/api/persona';
+import { AuthContext } from '../context/AuthContext';
 
 
 function PersonaScreen() {
+  const { user } = useContext(AuthContext);
 
   const [formData, setFormData] = useState({
     name: '',
@@ -22,7 +24,7 @@ const handleChange = (name : string, value : string) => {
 
 const handleSubmit = () => {
   console.log('Form Data:', formData);
-  postPersona(formData);
+  postPersona({username: user , formD : formData });
   // Here you might want to send the data to a backend server or handle it accordingly
 };
 

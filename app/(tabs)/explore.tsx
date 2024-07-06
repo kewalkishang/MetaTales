@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { View, Text, Image, Pressable, StyleSheet, TouchableOpacity} from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { Button } from 'react-native-elements/dist/buttons/Button';
 import { UploadStory } from '@/api/uploadStory';
+import { AuthContext } from '../../context/AuthContext';
 
 export default function TabTwoScreen() {
+  const { user } = useContext(AuthContext);
   const [permissionCameraInfo, requestPermissionCamera] = ImagePicker.useCameraPermissions();
   const [permissionLibraryInfo, requestPermissionLibrary] = ImagePicker.useMediaLibraryPermissions();
   const [imageLink, setImageLink] = useState("");
@@ -69,7 +71,7 @@ export default function TabTwoScreen() {
 
 
   const sendPicture = async() => {
-    UploadStory(`data:image/jpeg;base64,${base64m}`);
+    UploadStory({username : user, imgData:`data:image/jpeg;base64,${base64m}`});
     
   }
 

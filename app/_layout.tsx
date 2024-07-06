@@ -4,11 +4,11 @@ import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import 'react-native-reanimated';
-import StoryViewScreen from './storyViewScreen';
 
 //import personaScreen from '../app/personaForm/personaScreen'
 
 import { useColorScheme } from '@/hooks/useColorScheme';
+import { AuthProvider } from '../context/AuthContext';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -30,12 +30,15 @@ export default function RootLayout() {
   }
 
   return (
+    <AuthProvider>
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
+      <Stack initialRouteName="signin">
+        <Stack.Screen name="signin" options={{ headerShown: false }} />
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="+not-found" />
         {/* <Stack.Screen name="StoryViewScreen" component={StoryViewScreen}/> */}
       </Stack>
     </ThemeProvider>
+    </AuthProvider>
   );
 }

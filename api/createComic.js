@@ -4,14 +4,14 @@ import axios from 'axios';
 // Function to put an item into a DynamoDB table - calls our backend 
 export const createComic = async (data) => {
     console.log("Create comic stories");
-    const username = "DefaultUsername";
+    const username = data.username;
     console.log(data);
     const currtime = "Time";
 
     const updatedData = {
         username: username,
         time : currtime,
-        stories : data
+        stories : data.stories
     };
 
     const config = {

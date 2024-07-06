@@ -2,10 +2,11 @@ import axios from 'axios';
 //import Config from 'react-native-config';
 
 // Function to put an item into a DynamoDB table - calls our backend 
-export const getAllStories = async () => {
+export const getAllStories = async (data) => {
     console.log("Getting all stories");
-    const username = "DefaultUsername";
+    const username = data.username;
 
+    //This logic hasnt been implemented
     const currtime = "Time";
 
     const updatedData = {
