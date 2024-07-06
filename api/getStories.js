@@ -6,7 +6,7 @@ export const getAllStories = async (data) => {
     console.log("Getting all stories");
     const username = data.username;
 
-    //This logic hasnt been implemented
+    //This logic hasnt been implemenr
     const currtime = "Time";
 
     const updatedData = {

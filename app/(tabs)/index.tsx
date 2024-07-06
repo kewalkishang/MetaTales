@@ -2,10 +2,15 @@ import { Image, StyleSheet, TextInput , View, FlatList, Dimensions, SafeAreaView
 import React, { useState , useEffect, useContext } from 'react';
 import { TabBarIcon } from '@/components/navigation/TabBarIcon';
 
-import { getAllComics } from '../../api/getComic'
+import { getAllComics, getAllUserComics } from '../../api/getComic'
 import { AuthContext } from '../../context/AuthContext';
 //import { createComic } from '../../api/createComic'
 
+interface Item {
+  id: { S: string };  // Assuming DynamoDB format where attributes are typed
+  fullImageURL: string;
+  username: { S: string };
+}
 
  interface ImageItem {
   id: string;
@@ -42,14 +47,14 @@ export default function HomeScreen() {
 
   const fetchData = async () => {
     try {
-      const response = await getAllComics({username : user});
+      const response = await getAllUserComics({username : user});
       if (response.success) {
         // Assuming response.data directly contains the imageURLs array
-        const imageItems: ImageItem[] = response.img.map((url: string) => ({
-          id: url,  // Assuming URL is unique and can be used as an ID
-          uri: url,
-          username : 'kewalkishang', 
-          hashtags : [ 'self', 'new']
+        const imageItems: ImageItem[] = response.data.map( (item : Item)   => ({
+          id: item.id.S,  // Assuming URL is unique and can be used as an ID
+          uri: item.fullImageURL,  // Use the full image URL you composed
+          username: item.username.S,  // Use the username from each item
+          hashtags: ['self', 'new']  // Static hashtags for all items
         }));
 
        // setImgData(response.data);
@@ -151,8 +156,8 @@ export default function HomeScreen() {
     },
     imageContainer: {
       width : '100%',
-      height : 650,
-      backgroundColor: 'blue',
+      height : 600,
+      backgroundColor: 'black',
     },
     image: {
       // flex: 1,
@@ -175,8 +180,9 @@ export default function HomeScreen() {
       fontWeight: 'bold',
     },
     iconsCol: {
-      flexDirection: 'column',
+      flexDirection: 'row',
       alignItems: 'center',
+      alignContent: 'center',
       justifyContent: 'space-between',
     },
   });
