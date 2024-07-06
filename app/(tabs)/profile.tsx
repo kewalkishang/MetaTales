@@ -196,24 +196,25 @@ export default function ProfileScreen() {
         <Text style={styles.statNumber}>{likes}</Text>    
       </View>
     </View>
-    <View style={styles.tabsContainer}>
-        <TouchableOpacity
-          style={[styles.tab, activeTab === 'tale' && styles.activeTab]}
-          onPress={() => setActiveTab('tale')}
-        >
-          <Text style={styles.tabText}>Tale</Text>
-        </TouchableOpacity>
+    {/* <View style={styles.tabRow}> */}
+      <View style={styles.tabsContainer}>
+          <TouchableOpacity
+            style={[styles.tab, activeTab === 'tale' && styles.activeTab]}
+            onPress={() => setActiveTab('tale')}
+          >
+            <Text style={styles.tabText}>Tale</Text>
+          </TouchableOpacity>
+        
       
-    
 
-        <TouchableOpacity
-          style={[styles.tab, activeTab === 'arc' && styles.activeTab]}
-          onPress={() => setActiveTab('arc')}
-        >
-          <Text style={styles.tabText}>Arc</Text>
-        </TouchableOpacity>
-      </View>
-    
+          <TouchableOpacity
+            style={[styles.tab, activeTab === 'arc' && styles.activeTab]}
+            onPress={() => setActiveTab('arc')}
+          >
+            <Text style={styles.tabText}>Arc</Text>
+          </TouchableOpacity>
+        </View>
+    {/* </View> */}
       {/* Content based on active tab */}
       <View style={styles.contentContainer}>
          <FlatList
@@ -289,6 +290,9 @@ const styles = StyleSheet.create({
     paddingTop: 50, // Adjust based on your screen size
     backgroundColor: '#fff', // Background color
   },
+  tabRow: {
+    flexDirection: 'column',
+  },
   username: {
     fontSize: 24,
     fontWeight: 'bold',
@@ -326,6 +330,7 @@ const styles = StyleSheet.create({
   },
   tab: {
     padding: 10,
+    // marginLeft: 20,
     borderBottomWidth: 2,
     borderBottomColor: 'transparent',
   },

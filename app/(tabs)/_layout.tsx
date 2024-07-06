@@ -4,7 +4,10 @@ import React, { useContext } from 'react';
 import { TabBarIcon } from '@/components/navigation/TabBarIcon';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
+
 import { AuthContext } from '../../context/AuthContext';
+import {StyleSheet, View} from 'react-native';
+
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
@@ -22,13 +25,18 @@ export default function TabLayout() {
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
         headerShown: false,
+        tabBarStyle: {
+          backgroundColor: 'black' // Background color of the tab bar
+        },
       }}>
       <Tabs.Screen
         name="index"
         options={{
           title: 'Home',
           tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
+            <View style={styles.tabBarItem}>
+              <TabBarIcon  name={focused ? 'home' : 'home-outline'} color="white"/>
+            </View>
           ),
         }}
       />
@@ -37,7 +45,9 @@ export default function TabLayout() {
         options={{
           title: 'Upload',
           tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'add-circle' : 'add-circle-outline'} color={color} />
+            <View style={styles.tabBarItem}>
+            <TabBarIcon style={styles.tabBarItem} name={focused ? 'camera' : 'camera-outline'} color="white"/>
+            </View>
           ),
         }}
       />
@@ -46,7 +56,9 @@ export default function TabLayout() {
         options={{
           title: 'Profile',
           tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'person' : 'person-outline'} color={color} />
+            <View style={styles.tabBarItem}>
+              <TabBarIcon style={styles.tabBarItem} name={focused ? 'person' : 'person-outline'} color="white"/>
+            </View>
           ),
         }}
       />
@@ -54,3 +66,10 @@ export default function TabLayout() {
     
   );
 }
+
+const styles = StyleSheet.create({
+  tabBarItem: {
+   color: "white",
+   borderColor: "white"
+  },
+});
