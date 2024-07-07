@@ -2,6 +2,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { StyleSheet, Image, Platform, Text, View, TouchableOpacity, FlatList, Modal, ScrollView, Button, Dimensions } from 'react-native';
 import { Link, router } from 'expo-router';
 import { getAllStories } from '../../api/getStories'
+import { DeleteStory } from '../../api/uploadStory'
 import { createComic } from '../../api/createComic'
 import { getAllComics, getAllUserComics } from '../../api/getComic'
 import {createArc } from '../../api/createarc'
@@ -27,6 +28,11 @@ interface ArcItem {
   imageURL : string[];
   comicurl : string[];
   username: { S: string };
+}
+
+interface StoryItem {
+  id: string;
+  fuller: string;
 }
 
 interface ImageItem {
@@ -67,9 +73,9 @@ export default function ProfileScreen() {
       const response = await getAllStories({ username: user });
       if (response.success) {
         // Assuming response.data directly contains the imageURLs array
-        const imageItems: ImageItem[] = response.img.map((url: string) => ({
-          id: url,  // Assuming URL is unique and can be used as an ID
-          uri: url
+        const imageItems: ImageItem[] = response.img.map((story : StoryItem) => ({
+          id: story.id,  // Assuming URL is unique and can be used as an ID
+          uri: story.fuller
         }));
 
         setImgData(response.data);
@@ -97,8 +103,8 @@ export default function ProfileScreen() {
       // Reset state when the screen comes into focus
       // resetState();
       fetchData();
-      fetchComicData();
-      fetchArcData();
+      //fetchComicData();
+      //fetchArcData();
       return () => {
         // Cleanup if needed
       };
@@ -136,7 +142,7 @@ export default function ProfileScreen() {
   // useEffect to call fetchData on component mount
   useEffect(() => {
     //Comment it out if you are not testing stories.
-    fetchComicData();
+   // fetchComicData();
   }, []);
 
   const fetchArcData = async () => {
@@ -166,7 +172,7 @@ export default function ProfileScreen() {
   // useEffect to call fetchData on component mount
   useEffect(() => {
     //Comment it out if you are not testing stories.
-   fetchArcData();
+   //fetchArcData();
   }, []);
 
 
@@ -437,7 +443,18 @@ export default function ProfileScreen() {
                 style={styles.scrollView}
             >
                 {imagesForStories.map((img) => (
+                  <View>
                   <Image key={img.id} source={{ uri: img.uri }} style={styles.imageStyle} />
+                  <TouchableOpacity
+              style={{ position : 'absolute', right : 20, top : 10 }}
+              onPress={() => {
+                // Delet the story
+                DeleteStory({ username: user, imgURL: img.id });
+              }}
+            >
+                  <TabBarIcon size={25} name={ 'trash-outline' } color="black" />
+            </TouchableOpacity>
+                  </View>
                 ))}
               </ScrollView>
               {/* <Button title="Hide" onPress={() => {

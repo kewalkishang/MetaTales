@@ -11,6 +11,7 @@ export const getAllStories = async (data) => {
 
     const updatedData = {
         username: username,
+        method : "GET",
         time : currtime,
     };
 
@@ -35,28 +36,41 @@ export const getAllStories = async (data) => {
             return { success: false, message: "No items found in the response" };
         }
 
+        const todayStories = parsedData.items
+        .filter(item => item.username && item.username.S === username && isFromToday(item.id.S))
 
-        const imageURLs = parsedData.items
-        .filter(item => item.username && item.username.S === username && isFromToday(item.id.S))  // Check if the username matches
-        .map(item => item.imageURL.S);  // Extract imageURLs
-
+        console.log(todayStories);
+        // const imageURLs = todayStories.map(item => item.imageURL.S);  // Extract imageURLs
+        // console.log( "image ", imageURLs);
+        const bucketBaseUrl = process.env.EXPO_PUBLIC_S3_ENDPOINT;
+        const imageDetails = todayStories.map(item => {
+          const imageURL = item.imageURL.S;  // Extract imageURL
+          const encodedFilename = encodeURIComponent(imageURL);  // Encode to handle special characters
+          const fullImageUrl = `${bucketBaseUrl}${encodedFilename}`;  // Create full URL
+      
+          return {
+              id: imageURL,
+              fuller: fullImageUrl
+          };
+      });
 
         // Extracting messages from all items
  //const messages = parsedData.items[0].data.M.choices.L[0].M.message.M.content.S;
- const messages = extractAllMessages(parsedData);
+ const messages = extractAllMessages(todayStories);
 
+ console.log( "Messages" , messages);
+    
 
-        const bucketBaseUrl = process.env.EXPO_PUBLIC_S3_ENDPOINT;
+// const fullImageUrls = imageURLs.map(filename => {
+//     // Encode each filename to handle special characters properly
+//     const encodedFilename = encodeURIComponent(filename);
+//     // Concatenate the base URL with the encoded filename
+//     return `${bucketBaseUrl}${encodedFilename}`;
+// });
 
-const fullImageUrls = imageURLs.map(filename => {
-    // Encode each filename to handle special characters properly
-    const encodedFilename = encodeURIComponent(filename);
-    // Concatenate the base URL with the encoded filename
-    return `${bucketBaseUrl}${encodedFilename}`;
-});
-
-     // console.log('Stories URLs for', username, ':', fullImageUrls);
-        return { success: true, message: "Stories fetched successfully!", img: fullImageUrls, data :  messages };;
+      console.log('Stories URLs for', username, ':', imageDetails);
+      console.log('Stories messages for', username, ':', messages );
+        return { success: true, message: "Stories fetched successfully!", img: imageDetails, data :  messages };;
     } catch (error) {
         console.error('Error:', error.message);
         return { success: false, message: error.message };
@@ -72,7 +86,7 @@ const isFromToday = (isoDate) => {
   };
 
   const extractAllMessages = (parsedData) => {
-    return parsedData.items.map(item => {
+    return parsedData.map(item => {
       // Check if the necessary nested structure exists to avoid errors
       if (item.data && item.data.M && item.data.M.choices && item.data.M.choices.L.length > 0) {
         // Extract the message content
