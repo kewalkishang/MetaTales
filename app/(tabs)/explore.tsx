@@ -124,14 +124,9 @@ export default function TabTwoScreen() {
 //   };
 
 
-  // const sendPicture = async() => {
-  //   UploadStory({username : user, imgData:`data:image/jpeg;base64,${base64m}`});
-    
-  // }
-
   const sendPicture = async () => {
     try {
-      await UploadStory({ username: user, imgData: `data:image/jpeg;base64,${base64m}` });
+      await UploadStory({ username: user, imgData: `data:image/jpeg;base64,${base64m}`, location : location, caption : caption });
       setMessage('Story Uploaded');
       // setMessage(true);
       setUseMessage(true);

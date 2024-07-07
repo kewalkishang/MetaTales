@@ -108,7 +108,7 @@ export default function ProfileScreen() {
 
   const fetchComicData = async () => {
     try {
-      const response = await getAllUserComics({ username: user });
+      const response = await getAllComics({ username: user });
       if (response.success) {
         // Assuming response.data directly contains the imageURLs array
         const imageItems: ImageItem[] = response.data.map((item : ComicItem)   => ({
@@ -146,7 +146,7 @@ export default function ProfileScreen() {
         // Assuming response.data directly contains the imageURLs array
         const imageItems: ImageItem[] = response.data.map((item : ArcItem)   => ({
           id: item.id.S,  // Assuming URL is unique and can be used as an ID
-          uri: item.comicurl[0],  
+          uri: item.cover,  
           comicURL : item.comicurl,
           coverURL : item.cover,
           username: 'kewalkishang',
@@ -180,14 +180,14 @@ export default function ProfileScreen() {
       <View style={styles.overlayContainer}>
         <View style={{ width: "100%", flexDirection: 'row', justifyContent: 'space-around' }}>
           <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
-            <TabBarIcon size={14} name="eye-outline" color="white" />
+            <TabBarIcon size={14} name={ 'eye-outline' } color="white" />
             <Text style={styles.text}>2</Text>
           </View>
         </View>
       </View>
       <View style={styles.overlayContainerTop}>
         <View style={styles.iconsCol}>
-          <TabBarIcon size={18} name="image-outline" color="white" />
+          <TabBarIcon size={18} name={activeTab === 'tale' ? 'image-outline': 'book-outline' } color="white" />
         </View>
       </View>
 

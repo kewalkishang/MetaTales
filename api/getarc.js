@@ -36,7 +36,7 @@ export const getAllUserArc = async (data) => {
         }
 
       //  console.log('Parsed ARC data:', parsedData.items); 
-        console.log('Parsed ARC data:', parsedData.items[0].comicid.L[0].S); 
+        console.log('Parsed ARC data:', parsedData.items[0].coverurl.S); 
         const bucketBaseUrl = process.env.EXPO_PUBLIC_S3_ENDPOINT;
         const dataWithFullImageUrls = parsedData.items.map(item => ({
             ...item,
@@ -45,7 +45,7 @@ export const getAllUserArc = async (data) => {
                 const imageUrl = comic.S;
                 return imageUrl ? `${bucketBaseUrl}${encodeURIComponent(imageUrl)}` : undefined;
             }).filter(url => url),
-            cover : `${bucketBaseUrl}${encodeURIComponent(item.coverurl)}`
+            cover : `${bucketBaseUrl}${encodeURIComponent(item.coverurl.S)}`
         }));
     
       console.log('Image URLs ARC', username, ':', dataWithFullImageUrls );

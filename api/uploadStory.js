@@ -11,7 +11,9 @@ export const UploadStory = async (data) => {
 
         const updatedData = {
             username: username,
-            imageData: data.imgData
+            imageData: data.imgData,
+            location : data.location,
+            caption : data.caption
         };
 
         const config = {

@@ -103,27 +103,33 @@ export const getAllComics = async (data) => {
       }
 
 
-      const imageURLs = parsedData.items
+      const dataWithUser = parsedData.items
       .filter(item => item.username && item.username.S === username)  // Check if the username matches
-      .map(item => item.imageURL.S);  // Extract imageURLs
+      // .map(item => item.imageURL.S);  // Extract imageURLs
 
 
-//         // Extracting messages from all items
-//  //const messages = parsedData.items[0].data.M.choices.L[0].M.message.M.content.S;
-//  const messages = extractAllMessages(parsedData);
+      // const bucketBaseUrl = process.env.EXPO_PUBLIC_S3_ENDPOINT;
 
-
+      // const dataWithFullImageUrls = parsedData.items.map(item => {
+      //   if (item.username && item.username.S === username) {
+      //     const encodedFilename = encodeURIComponent(item.imageURL.S);
+      //     const fullImageURL = `${bucketBaseUrl}${encodedFilename}`;
+      //     return {
+      //       ...item,
+      //       fullImageURL: fullImageURL
+      //     };
+      //   }
+      //   return item;
+      // });
       const bucketBaseUrl = process.env.EXPO_PUBLIC_S3_ENDPOINT;
+      const dataWithFullImageUrls =  dataWithUser.map(item => ({
+          ...item,
+          fullImageURL: `${bucketBaseUrl}${encodeURIComponent(item.imageURL.S)}`
+      }));
+  
 
-const fullImageUrls = imageURLs.map(filename => {
-  // Encode each filename to handle special characters properly
-  const encodedFilename = encodeURIComponent(filename);
-  // Concatenate the base URL with the encoded filename
-  return `${bucketBaseUrl}${encodedFilename}`;
-});
-
-    console.log('Image URLs for', username, ':', fullImageUrls , " : " + imageURLs);
-      return { success: true, message: "Stories fetched successfully!", img: fullImageUrls , urls :imageURLs };;
+    console.log('Comic for', username, ':', dataWithFullImageUrls );
+      return { success: true, message: "Stories fetched successfully!", data: dataWithFullImageUrls };;
   } catch (error) {
       console.error('Error:', error.message);
       return { success: false, message: error.message };
