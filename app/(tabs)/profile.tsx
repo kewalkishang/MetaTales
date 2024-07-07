@@ -95,7 +95,7 @@ export default function ProfileScreen() {
   // useEffect to call fetchData on component mount
   useEffect(() => {
     //Comment it out if you are not testing stories.
-    fetchData();
+   fetchData();
   }, []);
 
   useFocusEffect(
@@ -103,7 +103,7 @@ export default function ProfileScreen() {
       // Reset state when the screen comes into focus
       // resetState();
       fetchData();
-      fetchComicData();
+     fetchComicData();
       fetchArcData();
       return () => {
         // Cleanup if needed
@@ -142,7 +142,7 @@ export default function ProfileScreen() {
   // useEffect to call fetchData on component mount
   useEffect(() => {
     //Comment it out if you are not testing stories.
-    fetchComicData();
+   fetchComicData();
   }, []);
 
   const fetchArcData = async () => {
@@ -151,7 +151,7 @@ export default function ProfileScreen() {
       if (response.success) {
         // Assuming response.data directly contains the imageURLs array
         const imageItems: ImageItem[] = response.data.map((item : ArcItem)   => ({
-          id: item.id.S,  // Assuming URL is unique and can be used as an ID
+          id: item.id,  // Assuming URL is unique and can be used as an ID
           uri: item.cover,  
           comicURL : item.comicurl,
           coverURL : item.cover,
@@ -350,7 +350,7 @@ export default function ProfileScreen() {
             <Text style={styles.noPostsText}>No posts yet</Text>
           </View>
         )}
-       {activeTab === 'arc' && imagesForTale.length > 0 &&
+       {activeTab === 'arc' && arc.length > 0 &&
         <View style={styles.contentContainer}>
               <FlatList
                 key={activeTab}

@@ -25,8 +25,8 @@ export const getAllUserArc = async (data) => {
     // Attempt to add the item to the DynamoDB table
     try {
         const response = await axios.get(process.env.EXPO_PUBLIC_ARC_API_ENDPOINT, updatedData);
-        console.log('Response :', response.data);
-        const parsedData = JSON.parse(response.data.body);
+       // console.log('Response :', response.data);
+       const parsedData = JSON.parse(response.data.body);
 
         console.log('Parsed ARC data:', parsedData);  // Log the parsed data for debugging
 
@@ -40,7 +40,7 @@ export const getAllUserArc = async (data) => {
       .filter(item => item.username && item.username.S === username)  
 
       //  console.log('Parsed ARC data:', parsedData.items); 
-        console.log('Parsed ARC data:', parsedData.items[0].coverurl.S); 
+      //  console.log('Parsed ARC data:', parsedData.items[0].coverurl.S); 
         const bucketBaseUrl = process.env.EXPO_PUBLIC_S3_ENDPOINT;
         const dataWithFullImageUrls = dataWithUser.map(item => ({
             ...item,
@@ -52,7 +52,7 @@ export const getAllUserArc = async (data) => {
             cover : `${bucketBaseUrl}${encodeURIComponent(item.coverurl.S)}`
         }));
     
-      console.log('Image URLs ARC', username, ':', dataWithFullImageUrls );
+      //console.log('Image URLs ARC', username, ':', dataWithFullImageUrls );
       return { success: true, message: "Stories fetched successfully!", data: dataWithFullImageUrls };
     } catch (error) {
         console.error('Error:', error.message);
