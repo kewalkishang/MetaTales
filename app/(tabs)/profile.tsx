@@ -159,7 +159,7 @@ export default function ProfileScreen() {
           hashtags: ['self', 'new']
         }));
         console.log("ARC  ", imageItems);
-        console.log("ARC LENGHT ", imageItems.length);
+        console.log("ARC LENGTH ", imageItems.length);
        setArc(imageItems);
       } else {
         console.error("Failed to fetch arc data:", response.message);
@@ -183,14 +183,14 @@ export default function ProfileScreen() {
         source={{ uri: item.uri }}
         style={{ flex: 1, height: undefined, width: undefined, resizeMode: 'cover' }}
       />
-      <View style={styles.overlayContainer}>
+      {/* <View style={styles.overlayContainer}>
         <View style={{ width: "100%", flexDirection: 'row', justifyContent: 'space-around' }}>
           <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
             <TabBarIcon size={14} name={ 'eye-outline' } color="white" />
             <Text style={styles.text}>2</Text>
           </View>
         </View>
-      </View>
+      </View> */}
       <View style={styles.overlayContainerTop}>
         <View style={styles.iconsCol}>
           <TabBarIcon size={18} name={activeTab === 'tale' ? 'image-outline': 'book-outline' } color="white" />
@@ -265,8 +265,7 @@ export default function ProfileScreen() {
         <Text style={styles.username}>{user}</Text>
         {/* <Link href="/personaForm"> */}
         <TouchableOpacity onPress={() => { router.push('/personaScreen') }}>
-
-          <TabBarIcon size={28} name="accessibility-outline" color="black" />
+          <TabBarIcon size={23} name="accessibility-outline" color="black" />
         </TouchableOpacity>
         {/* </Link> */}
       </View>
@@ -325,14 +324,14 @@ export default function ProfileScreen() {
         {
           activeTab === 'tale' && imagesForTale.length > 0 &&
           <TouchableOpacity
-            style={{}}
+            style={styles.createArcContainer}
             onPress={() => createArc({ username: user, stories: imgData, imgData : imagesForTale })}
           >
-            <Text style={styles.tabText}>Create ARC</Text>
+            <Text style={styles.createArcText}>Create ARC</Text>
           </TouchableOpacity>
 
         }
-   {activeTab === 'tale' &&
+   {activeTab === 'tale' && imagesForTale.length > 0 &&
         <View style={styles.contentContainer}>
               <FlatList
                 key={activeTab}
@@ -344,7 +343,12 @@ export default function ProfileScreen() {
               />
               </View>
       }
-       {activeTab === 'arc' &&
+      {activeTab === 'tale' && imagesForTale.length === 0 && (
+          <View style={styles.noPostsContainer}>
+            <Text style={styles.noPostsText}>No posts yet</Text>
+          </View>
+        )}
+       {activeTab === 'arc' && imagesForTale.length > 0 &&
         <View style={styles.contentContainer}>
               <FlatList
                 key={activeTab}
@@ -355,6 +359,11 @@ export default function ProfileScreen() {
               />
               </View>
       }
+      {activeTab === 'arc' && arc.length === 0 && (
+          <View style={styles.noPostsContainerArc}>
+            <Text style={styles.noPostsText}>No posts yet</Text>
+          </View>
+      )}
 
 </View>
 
@@ -552,6 +561,21 @@ export default function ProfileScreen() {
         tabText: {
           fontWeight: 'bold',
   },
+  createArcContainer:{
+    // flex: 1,
+    justifyContent: 'center',
+    alignContent: 'center',
+    // width: 20,
+    marginVertical: 10,
+    marginHorizontal: 137,
+    backgroundColor: '#FFC300',
+    padding: 15,
+    borderRadius: 30,
+  },
+  createArcText:{
+    fontWeight: 'bold',
+    fontSize: 15
+  },
         contentContainerArc: {
           flex: 1,
         height : '100%',
@@ -586,6 +610,21 @@ export default function ProfileScreen() {
           marginBottom: 10,
 
   },
+  noPostsContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '100%',
+  },
+  noPostsText: {
+    fontSize: 18,
+    color: '#666',
+  },
+  noPostsContainerArc:{
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '100%',
+  },
         centeredView: {
           flex: 1,
           alignItems: 'center',
@@ -612,16 +651,17 @@ export default function ProfileScreen() {
         height: 300,
   },
         buttonClose: {
-          backgroundColor: '#2196F3',
-        borderRadius: 20,
+        backgroundColor: '#BDCFF0',
+        borderRadius: 30,
         padding: 10,
         elevation: 2,
         marginTop: 15,
   },
         textStyle: {
-          color: 'white',
+        color: 'black',
         fontWeight: 'bold',
         textAlign: 'center',
+        fontSize: 20
   },
         overlayContainer: {
           position: 'absolute',

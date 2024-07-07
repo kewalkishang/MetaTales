@@ -253,8 +253,10 @@ export default function TabTwoScreen() {
               )}
             </View>
           ) 
-          : (
-              <Text style={styles.preview}>No image selected ...</Text>
+          : ( 
+            <View style={styles.preview}>
+              <Text>No image selected ...</Text>
+            </View>
           )
           }
       </View>
