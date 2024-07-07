@@ -7,8 +7,8 @@ import { getAllComics, getAllUserComics } from '../../api/getComic'
 import {createArc } from '../../api/createarc'
 import {getAllUserArc } from '../../api/getarc'
 import { SafeAreaView } from 'react-native-safe-area-context';
-
-import React, { useState, useEffect, useContext } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
+import React, { useState, useEffect, useContext, useCallback } from 'react';
 import { TabBarIcon } from '@/components/navigation/TabBarIcon';
 import { AuthContext } from '../../context/AuthContext';
 
@@ -91,6 +91,20 @@ export default function ProfileScreen() {
     //Comment it out if you are not testing stories.
     fetchData();
   }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      // Reset state when the screen comes into focus
+      // resetState();
+      fetchData();
+      fetchComicData();
+      fetchArcData();
+      return () => {
+        // Cleanup if needed
+      };
+    }, [])
+  );
+  
 
   const fetchComicData = async () => {
     try {

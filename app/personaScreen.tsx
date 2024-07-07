@@ -7,6 +7,7 @@ import { AuthContext } from '../context/AuthContext';
 
 function PersonaScreen() {
   const { user } = useContext(AuthContext);
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const [formData, setFormData] = useState({
     name: '',
@@ -57,6 +58,8 @@ useEffect(() => {
 const handleSubmit = () => {
   console.log('Form Data:', formData);
   postPersona({username: user , formD : formData });
+  setIsSubmitted(true);
+  setTimeout(() => setIsSubmitted(false), 2000);
   // Here you might want to send the data to a backend server or handle it accordingly
 };
 
@@ -110,6 +113,11 @@ return (
       <Button title="Submit" onPress={handleSubmit} />
   </ScrollView>
   </KeyboardAwareScrollView>
+  {isSubmitted && (
+    <View style={styles.centeredMessageContainer}>
+      <Text style={styles.centeredMessageText}>Form Submitted</Text>
+    </View>
+  )}
   </View>
 );
 }
@@ -138,6 +146,24 @@ label: {
 preview : {
   width : '100%',
   height : 250
+},
+centeredMessageContainer: {
+  position: 'absolute',
+  top: 0,
+  left: 0,
+  right: 0,
+  bottom: 0,
+  justifyContent: 'center',
+  alignItems: 'center',
+  backgroundColor: '#F1F1F1', // Optional: to make the background a bit darker
+},
+centeredMessageText: {
+  backgroundColor: 'F1F1F1',
+  padding: 20,
+  borderRadius: 10,
+  color: 'black',
+  fontWeight: 'bold',
+  textAlign: 'center',
 }
 });
 

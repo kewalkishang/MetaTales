@@ -6,7 +6,7 @@ import { UploadStory } from '@/api/uploadStory';
 import { TabBarIcon } from '@/components/navigation/TabBarIcon';
 import * as Location from 'expo-location';
 import { AuthContext } from '../../context/AuthContext';
-import { useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 
 export default function TabTwoScreen() {
   const { user } = useContext(AuthContext);
@@ -20,8 +20,9 @@ export default function TabTwoScreen() {
   const [isEditingCaption, setIsEditingCaption] = useState(false);
   const [captionPosition, setCaptionPosition] = useState({ x: 0, y: 0 });
   const [location, setLocation] = useState<string | null>(null);
-  // const [locationCoords, setLocationCoords] = useState({ latitude: 0, longitude: 0 });
-  // const [isMapVisible, setIsMapVisible] = useState(false);
+  const [message, setMessage] = useState('');
+  const [useMessage, setUseMessage] = useState(false);
+  const navigation = useNavigation();
   
   useFocusEffect(
     useCallback(() => {
@@ -123,10 +124,26 @@ export default function TabTwoScreen() {
 //   };
 
 
-  const sendPicture = async() => {
-    UploadStory({username : user, imgData:`data:image/jpeg;base64,${base64m}`});
+  // const sendPicture = async() => {
+  //   UploadStory({username : user, imgData:`data:image/jpeg;base64,${base64m}`});
     
-  }
+  // }
+
+  const sendPicture = async () => {
+    try {
+      await UploadStory({ username: user, imgData: `data:image/jpeg;base64,${base64m}` });
+      setMessage('Story Uploaded');
+      // setMessage(true);
+      setUseMessage(true);
+      setTimeout(() => setUseMessage(false), 2000);
+      // navigation.navigate('profile'); // replace 'Profile' with your profile page route name
+    } catch (error) {
+      console.error('Error uploading story:', error);
+      setMessage('Failed to upload story');
+      setUseMessage(true);
+      setTimeout(() => setUseMessage(false), 2000);
+    }
+  };
 
   const reopenCamera = () => {
     setLoading(true);
@@ -233,6 +250,12 @@ export default function TabTwoScreen() {
                 <TabBarIcon name="location-outline" color="black" size={32}/>
                 {/* <Text >Add Location</Text> */}
               </TouchableOpacity>
+              {/* {message && <Text style={styles.uploadedMessage}>{message}</Text>} */}
+              {useMessage && (
+                <View style={styles.centeredMessageContainer}>
+                  <Text style={styles.centeredMessageText}>{message}</Text>
+                </View>
+              )}
             </View>
           ) 
           : (
@@ -244,6 +267,29 @@ export default function TabTwoScreen() {
 }
 
 const styles = StyleSheet.create({
+  centeredMessageContainer: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#F1F1F1', // Optional: to make the background a bit darker
+  },
+  centeredMessageText: {
+    backgroundColor: 'F1F1F1',
+    padding: 20,
+    borderRadius: 10,
+    color: 'black',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  uploadedMessage:{
+    marginTop: 10,
+    fontSize: 18,
+    textAlign: 'center',
+  },
   container: {
     flex: 1,
     justifyContent: 'center',
