@@ -60,7 +60,7 @@ export const getAllUserComics = async (data) => {
         }));
     
 
-      console.log('Image URLs ALL SDAS for', username, ':', dataWithFullImageUrls );
+      console.log('Comic for', username, ':', dataWithFullImageUrls );
         return { success: true, message: "Stories fetched successfully!", data: dataWithFullImageUrls };;
     } catch (error) {
         console.error('Error:', error.message);

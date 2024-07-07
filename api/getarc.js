@@ -44,7 +44,8 @@ export const getAllUserArc = async (data) => {
                 // Accessing the structure correctly based on your JSON structure
                 const imageUrl = comic.S;
                 return imageUrl ? `${bucketBaseUrl}${encodeURIComponent(imageUrl)}` : undefined;
-            }).filter(url => url) // This will remove any undefined entries if imageUrl was not found
+            }).filter(url => url),
+            cover : `${bucketBaseUrl}${encodeURIComponent(item.coverurl)}`
         }));
     
       console.log('Image URLs ARC', username, ':', dataWithFullImageUrls );

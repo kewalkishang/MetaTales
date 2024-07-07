@@ -1,7 +1,7 @@
-import React , {useState, useContext} from 'react';
+import React , {useState, useContext, useEffect } from 'react';
 import {  View, Text, TextInput, Button, StyleSheet, ScrollView , Image} from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { postPersona } from '@/api/persona';
+import { postPersona , getPersona } from '@/api/persona';
 import { AuthContext } from '../context/AuthContext';
 
 
@@ -13,7 +13,8 @@ function PersonaScreen() {
     physicalFeatures: '',
     clothing: '',
     personality: '',
-    artStyle: ''
+    artStyle: '',
+    characterURL : 'https://img.freepik.com/free-vector/hand-drawn-collection-different-profile-icons_23-2149081372.jpg?size=626&ext=jpg&ga=GA1.1.1413502914.1719964800&semt=sph'
 });
 
 const handleChange = (name : string, value : string) => {
@@ -22,6 +23,36 @@ const handleChange = (name : string, value : string) => {
         [name]: value
     }));
 };
+
+const fetchData = async () => {
+  try {
+    const response = await getPersona({ username: user });
+    if (response.success) {
+      // Assuming response.data directly contains the imageURLs array
+      console.log("Persona", response.data);
+      const persona = response.data[0];  // Assuming 'data' directly contains the persona object
+      setFormData({
+        name: persona.name.S,
+        physicalFeatures: persona.physicalFeatures.S,
+        clothing: persona.clothing.S,
+        personality: persona.personality.S,
+        artStyle: persona.artStyle.S,
+        characterURL : response.img ? response.img : 'https://img.freepik.com/free-vector/hand-drawn-collection-different-profile-icons_23-2149081372.jpg?size=626&ext=jpg&ga=GA1.1.1413502914.1719964800&semt=sph',
+      });
+
+    } else {
+      console.error("Failed to fetch data:", response.message);
+    }
+  } catch (error) {
+    console.error("Failed to fetch data:", error);
+  }
+};
+
+useEffect(() => {
+  //Comment it out if you are not testing stories.
+  fetchData();
+}, []);
+
 
 const handleSubmit = () => {
   console.log('Form Data:', formData);
@@ -32,7 +63,7 @@ const handleSubmit = () => {
 return (
   <View style={{ backgroundColor : 'white', height : '100%' }}>
     <Image source={{ uri :
-      'https://img.freepik.com/free-vector/hand-drawn-collection-different-profile-icons_23-2149081372.jpg?size=626&ext=jpg&ga=GA1.1.1413502914.1719964800&semt=sph'
+       formData.characterURL
     }} style={styles.preview} />
     <KeyboardAwareScrollView contentContainerStyle={styles.container} enableOnAndroid={true}>
   <ScrollView contentContainerStyle={styles.container}>

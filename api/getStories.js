@@ -3,7 +3,7 @@ import axios from 'axios';
 
 // Function to put an item into a DynamoDB table - calls our backend 
 export const getAllStories = async (data) => {
-    console.log("Getting all stories");
+   // console.log("Getting all stories");
     const username = data.username;
 
     //This logic hasnt been implemenr
@@ -25,10 +25,10 @@ export const getAllStories = async (data) => {
     // Attempt to add the item to the DynamoDB table
     try {
         const response = await axios.get(process.env.EXPO_PUBLIC_GETSTORY_API_ENDPOINT, updatedData);
-        console.log('Response :', response.data);
+       // console.log('Response :', response.data);
         const parsedData = JSON.parse(response.data.body);
 
-        console.log('Parsed response data:', parsedData);  // Log the parsed data for debugging
+       // console.log('Parsed ALL STORIES data:', parsedData);  // Log the parsed data for debugging
 
         if (!parsedData.items) {
             console.error('No items array found:', parsedData);
@@ -55,7 +55,7 @@ const fullImageUrls = imageURLs.map(filename => {
     return `${bucketBaseUrl}${encodedFilename}`;
 });
 
-      console.log('Image URLs for', username, ':', fullImageUrls);
+     // console.log('Stories URLs for', username, ':', fullImageUrls);
         return { success: true, message: "Stories fetched successfully!", img: fullImageUrls, data :  messages };;
     } catch (error) {
         console.error('Error:', error.message);

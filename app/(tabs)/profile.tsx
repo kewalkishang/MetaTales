@@ -23,7 +23,7 @@ interface ComicItem {
 
 interface ArcItem {
   id: { S: string };  // Assuming DynamoDB format where attributes are typed
-  coverImageURL: string;
+  cover : string;
   imageURL : string[];
   comicurl : string[];
   username: { S: string };
@@ -34,6 +34,7 @@ interface ImageItem {
   uri: string;
   url : string;
   comicURL : string[];
+  coverURL : string;
 }
 
 // const FirstRoute = () => (
@@ -105,11 +106,11 @@ export default function ProfileScreen() {
         }));
 
          setImgData(response.data);
-
+          console.log("Comics ",imageItems.length);
         setImagesForTale(imageItems);
-        if (imageItems.length > 0) {
-           setHasStories(true);
-        }
+        // if (imageItems.length > 0) {
+        //    setHasStories(true);
+        // }
       } else {
         console.error("Failed to fetch data:", response.message);
       }
@@ -133,10 +134,12 @@ export default function ProfileScreen() {
           id: item.id.S,  // Assuming URL is unique and can be used as an ID
           uri: item.comicurl[0],  
           comicURL : item.comicurl,
+          coverURL : item.cover,
           username: 'kewalkishang',
           hashtags: ['self', 'new']
         }));
-        console.log(imageItems);
+        console.log("ARC  ", imageItems);
+        console.log("ARC LENGHT ", imageItems.length);
        setArc(imageItems);
       } else {
         console.error("Failed to fetch arc data:", response.message);
@@ -149,7 +152,7 @@ export default function ProfileScreen() {
   // useEffect to call fetchData on component mount
   useEffect(() => {
     //Comment it out if you are not testing stories.
-    fetchArcData();
+   fetchArcData();
   }, []);
 
 
@@ -200,10 +203,10 @@ export default function ProfileScreen() {
   // ];
 
   const imagesForArc: ImageItem[] = [
-    { id: '1', uri: 'https://cdn.glitch.global/30af1d3b-4338-4f4a-a826-359ed81189cf/uki0lwy-360-panorama-view-park.jpeg?v=1678660202470', url : '' , comicURL : []},
-    { id: '2', uri: 'https://cdn.glitch.global/30af1d3b-4338-4f4a-a826-359ed81189cf/uki0lwy-360-panorama-view-park.jpeg?v=1678660202470', url : '', comicURL : [] },
-    { id: '3', uri: 'https://cdn.glitch.global/30af1d3b-4338-4f4a-a826-359ed81189cf/uki0lwy-360-panorama-view-park.jpeg?v=1678660202470' , url : '' , comicURL : []},
-    { id: '4', uri: 'https://cdn.glitch.global/30af1d3b-4338-4f4a-a826-359ed81189cf/uki0lwy-360-panorama-view-park.jpeg?v=1678660202470' , url : ''  , comicURL : []},
+    { id: '1', uri: 'https://cdn.glitch.global/30af1d3b-4338-4f4a-a826-359ed81189cf/uki0lwy-360-panorama-view-park.jpeg?v=1678660202470', url : '' , comicURL : [], coverURL : ''},
+    { id: '2', uri: 'https://cdn.glitch.global/30af1d3b-4338-4f4a-a826-359ed81189cf/uki0lwy-360-panorama-view-park.jpeg?v=1678660202470', url : '', comicURL : [], coverURL : '' },
+    { id: '3', uri: 'https://cdn.glitch.global/30af1d3b-4338-4f4a-a826-359ed81189cf/uki0lwy-360-panorama-view-park.jpeg?v=1678660202470' , url : '' , comicURL : [], coverURL : ''},
+    { id: '4', uri: 'https://cdn.glitch.global/30af1d3b-4338-4f4a-a826-359ed81189cf/uki0lwy-360-panorama-view-park.jpeg?v=1678660202470' , url : ''  , comicURL : [] , coverURL : ''},
   ];
 
 
@@ -265,7 +268,6 @@ export default function ProfileScreen() {
         <View style={styles.statBox}>
           <Text style={styles.statLabel}>Followers</Text>
           <Text style={styles.statNumber}>{followers}</Text>
-
         </View>
         <View style={styles.statBox}>
           <Text style={styles.statLabel}>Following</Text>
@@ -310,16 +312,30 @@ export default function ProfileScreen() {
           </TouchableOpacity>
 
         }
-  {/* <Text>{activeTab === 'tale' ? 'Tale View' : 'Arc View'}</Text> */}
-  <View style={styles.contentContainer}>
+   {activeTab === 'tale' &&
+        <View style={styles.contentContainer}>
               <FlatList
                 key={activeTab}
-                data={activeTab === 'tale' ? imagesForTale : arc}
+                data={imagesForTale}
                 renderItem={renderImageItem}
                 keyExtractor={item => `${activeTab}-${item.id}`}
                 numColumns={3}
+                
               />
               </View>
+      }
+       {activeTab === 'arc' &&
+        <View style={styles.contentContainer}>
+              <FlatList
+                key={activeTab}
+                data={arc}
+                renderItem={renderImageItem}
+                keyExtractor={item => `${activeTab}-${item.id}`}
+                numColumns={1}
+              />
+              </View>
+      }
+
 </View>
 
 
@@ -401,7 +417,11 @@ export default function ProfileScreen() {
                 <TouchableOpacity onPress={() => setStoriesVisible(false)} style={styles.crossIcon}>
                   <TabBarIcon name="close" color="black" size={32} style={styles.crossIconStyle}/>
                 </TouchableOpacity>
-              <ScrollView horizontal={true} pagingEnabled={true} contentContainerStyle={styles.scrollViewStyle}>
+                <ScrollView
+                horizontal={true}
+                showsHorizontalScrollIndicator={false} // Hides the horizontal scroll indicators
+                style={styles.scrollView}
+            >
                 {imagesForStories.map((img) => (
                   <Image key={img.id} source={{ uri: img.uri }} style={styles.imageStyle} />
                 ))}
@@ -462,6 +482,7 @@ export default function ProfileScreen() {
           flex: 1,
   },
   scrollView: {
+    marginTop : 200,
     display: 'flex',
     flexDirection: 'row',
 },
@@ -522,7 +543,7 @@ export default function ProfileScreen() {
         justifyContent: 'space-between',
   },
         taleImage: {
-          width: '50%', // slightly less than one-third
+          width: '33%', // slightly less than one-third
         height: 100,
         resizeMode:'contain',
         marginBottom: 10,
