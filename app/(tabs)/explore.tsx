@@ -1,4 +1,4 @@
-import React, { useState , useEffect,  useContext} from 'react';
+import React, { useState , useEffect,  useContext, useCallback} from 'react';
 import { View, Text, Image, Pressable, StyleSheet, TouchableOpacity, ActivityIndicator, PanResponder, Animated, TextInput, Modal} from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { Button } from 'react-native-elements/dist/buttons/Button';
@@ -6,6 +6,7 @@ import { UploadStory } from '@/api/uploadStory';
 import { TabBarIcon } from '@/components/navigation/TabBarIcon';
 import * as Location from 'expo-location';
 import { AuthContext } from '../../context/AuthContext';
+import { useFocusEffect } from '@react-navigation/native';
 
 export default function TabTwoScreen() {
   const { user } = useContext(AuthContext);
@@ -19,10 +20,20 @@ export default function TabTwoScreen() {
   const [isEditingCaption, setIsEditingCaption] = useState(false);
   const [captionPosition, setCaptionPosition] = useState({ x: 0, y: 0 });
   const [location, setLocation] = useState<string | null>(null);
-  const [locationCoords, setLocationCoords] = useState({ latitude: 0, longitude: 0 });
-  const [isMapVisible, setIsMapVisible] = useState(false);
-
+  // const [locationCoords, setLocationCoords] = useState({ latitude: 0, longitude: 0 });
+  // const [isMapVisible, setIsMapVisible] = useState(false);
   
+  useFocusEffect(
+    useCallback(() => {
+      // Reset state when the screen comes into focus
+      // resetState();
+      reopenCamera();
+
+      return () => {
+        // Cleanup if needed
+      };
+    }, [])
+  );
 
   useEffect(() => {
     const openCamera = async () => {
@@ -209,10 +220,10 @@ export default function TabTwoScreen() {
                 
               )} */}
               <TouchableOpacity onPress={()=>toggleCaptionEditing()} style={styles.captionButton}>
-                  <TabBarIcon name="text-outline" color="white" />
+                  <TabBarIcon name="text-outline" color="black" size={32}/>
               </TouchableOpacity>
               <TouchableOpacity onPress={reopenCamera} style={styles.crossIcon}>
-                <TabBarIcon name="close" color="white" size={32} style={styles.crossIconStyle}/>
+                <TabBarIcon name="close" color="black" size={32} style={styles.crossIconStyle}/>
               </TouchableOpacity>
               <TouchableOpacity onPress={sendPicture} style={styles.uploadButton}>
              {/* <Text style={{ color : 'white'}}>Upload</Text> */}
@@ -258,7 +269,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor : 'black'
+    backgroundColor : 'white',
+    color: "black"
   },
   uploadButton: {
     position: 'absolute',
@@ -306,7 +318,7 @@ const styles = StyleSheet.create({
     bottom: 50,
     left: 70,
     padding: 10,
-    backgroundColor: '#fff',
+    backgroundColor: '#ddd',
     borderRadius: 50,
   },
   locationText: {
