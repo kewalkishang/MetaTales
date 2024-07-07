@@ -6,6 +6,7 @@ import { createComic } from '../../api/createComic'
 import { getAllComics, getAllUserComics } from '../../api/getComic'
 import {createArc } from '../../api/createarc'
 import {getAllUserArc } from '../../api/getarc'
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import React, { useState, useEffect, useContext } from 'react';
 import { TabBarIcon } from '@/components/navigation/TabBarIcon';
@@ -87,7 +88,7 @@ export default function ProfileScreen() {
   // useEffect to call fetchData on component mount
   useEffect(() => {
     //Comment it out if you are not testing stories.
-  //  fetchData();
+    fetchData();
   }, []);
 
   const fetchComicData = async () => {
@@ -103,11 +104,11 @@ export default function ProfileScreen() {
           hashtags: ['self', 'new']
         }));
 
-        // setImgData(response.data);
+         setImgData(response.data);
 
         setImagesForTale(imageItems);
         if (imageItems.length > 0) {
-          // setHasStories(true);
+           setHasStories(true);
         }
       } else {
         console.error("Failed to fetch data:", response.message);
@@ -120,7 +121,7 @@ export default function ProfileScreen() {
   // useEffect to call fetchData on component mount
   useEffect(() => {
     //Comment it out if you are not testing stories.
-    //fetchComicData();
+    fetchComicData();
   }, []);
 
   const fetchArcData = async () => {
@@ -397,19 +398,32 @@ export default function ProfileScreen() {
             }}
           >
             <View style={styles.centeredView}>
-              <ScrollView horizontal={true} pagingEnabled={true} style={styles.scrollViewStyle}>
+                <TouchableOpacity onPress={() => setStoriesVisible(false)} style={styles.crossIcon}>
+                  <TabBarIcon name="close" color="black" size={32} style={styles.crossIconStyle}/>
+                </TouchableOpacity>
+              <ScrollView horizontal={true} pagingEnabled={true} contentContainerStyle={styles.scrollViewStyle}>
                 {imagesForStories.map((img) => (
                   <Image key={img.id} source={{ uri: img.uri }} style={styles.imageStyle} />
                 ))}
               </ScrollView>
-              <Button title="Hide" onPress={() => {
+              {/* <Button title="Hide" onPress={() => {
                 console.log("Hide");
                 setStoriesVisible(false);
-              }} />
+              }} /> */}
+{/*              
               <Button title="Create Comic" onPress={() => {
                 //    console.log("Create");
                 createComic({ username: user, stories: imgData });
-              }} />
+              }} /> */}
+              <TouchableOpacity
+              style={styles.createComicButton}
+              onPress={() => {
+                // Call the createComic function
+                createComic({ username: user, stories: imgData });
+              }}
+            >
+              <Text style={styles.createComicButtonText}>Create Comic</Text>
+            </TouchableOpacity>
             </View>
           </Modal>
 
@@ -522,9 +536,9 @@ export default function ProfileScreen() {
   },
         centeredView: {
           flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: 22,
+          alignItems: 'center',
+          justifyContent: 'center',
+          backgroundColor: '#fff',
   },
         modalView: {
           margin: 20,
@@ -582,18 +596,19 @@ export default function ProfileScreen() {
         justifyContent: 'space-between',
   },
         profileImageHighlighted: {
-          width: 150,
+        width: 150,
         height: 150,
         borderRadius: 75, // Half of the width/height to create circle
         borderWidth: 5,
         borderColor: 'blue', // Highlight color
   },
         scrollViewStyle: {
-          width: '100%',
-        height: '80%',
+          alignItems: 'center',
+          // justifyContent: 'center',
+          width: '80%',
   },
         contentVisible: {
-          flex: 1,
+        flex: 1,
         height: '100%', // or another height depending on your design
         opacity: 1,
   },
@@ -601,10 +616,48 @@ export default function ProfileScreen() {
           display : 'none'
   },
         imageStyle: {
-          width: 300, // Set image width
-        height: 300, // Set image height
-        resizeMode: 'contain',
-        margin: 10,
+          width: 300,
+          height: 300,
+          marginHorizontal: 10,
+          borderRadius: 10,
   },
+  // scrollViewStyle: {
+  //   width: '100%',
+  //   height : '100%',
+  //   flex: 1,
+  //   // justifyContent: 'center',
+  //   // alignItems: 'center',
+  //   backgroundColor : 'white',
+  //   flexDirection: 'row'
+  // },
+  // imageStyle: {
+  //   flex: 1,
+  //   justifyContent: 'center',
+  //   alignItems: 'center',
+  //   width : '100%', // Set image width to window width
+  //   height : '94%', // Set image height to window height
+  //   resizeMode: 'contain', // Cover to maintain aspect ratio
+  // },
+  crossIcon: {
+    position: 'absolute',
+    top: 40, // Position at the top of the screen, adjust as necessary
+    left: 20, // Position at the left of the screen, adjust as necessary
+    zIndex: 10, // Ensure it stays on top
+  },
+  crossIconStyle: {
+    fontWeight: 'bold',
+  },
+  createComicButton: {
+      position : 'absolute',
+      bottom: 60,
+      backgroundColor: '#C4AED7',
+      padding: 15,
+      borderRadius: 30,
+      margin: 25
+  },
+  createComicButtonText:{
+    fontSize: 17,
+    fontWeight: "bold"
+  }
 
 });
