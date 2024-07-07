@@ -103,8 +103,8 @@ export default function ProfileScreen() {
       // Reset state when the screen comes into focus
       // resetState();
       fetchData();
-      //fetchComicData();
-      //fetchArcData();
+      fetchComicData();
+      fetchArcData();
       return () => {
         // Cleanup if needed
       };
@@ -142,7 +142,7 @@ export default function ProfileScreen() {
   // useEffect to call fetchData on component mount
   useEffect(() => {
     //Comment it out if you are not testing stories.
-   // fetchComicData();
+    fetchComicData();
   }, []);
 
   const fetchArcData = async () => {
@@ -172,7 +172,7 @@ export default function ProfileScreen() {
   // useEffect to call fetchData on component mount
   useEffect(() => {
     //Comment it out if you are not testing stories.
-   //fetchArcData();
+   fetchArcData();
   }, []);
 
 
@@ -180,6 +180,7 @@ export default function ProfileScreen() {
   const renderImageItem = ({ item }: { item: ImageItem }) => (
     <TouchableOpacity onPress={() => handlePressImage(item)} style={activeTab === 'tale' ? styles.taleImage : styles.arcImage}>
       <Image
+         key={item.id}
         source={{ uri: item.uri }}
         style={{ flex: 1, height: undefined, width: undefined, resizeMode: 'cover' }}
       />
@@ -278,6 +279,7 @@ export default function ProfileScreen() {
           params: { images : ["https://cdn.glitch.global/30af1d3b-4338-4f4a-a826-359ed81189cf/uki0lwy-360-panorama-view-park.jpeg?v=1678660202470", "https://cdn.glitch.global/30af1d3b-4338-4f4a-a826-359ed81189cf/uki0lwy-360-panorama-view-park.jpeg?v=1678660202470"]}
         }}> */}
         <Image
+           key="ProfilePic"
           style={hasStories ? styles.profileImageHighlighted : styles.profileImage}
           source={personIcon}// Replace with your image URL
         />
