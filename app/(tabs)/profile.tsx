@@ -3,27 +3,45 @@ import { StyleSheet, Image, Platform, Text, View, TouchableOpacity, FlatList, Mo
 import { Link, router } from 'expo-router';
 import { getAllStories } from '../../api/getStories'
 import { createComic } from '../../api/createComic'
-import { getAllComics } from '../../api/getComic'
+import { getAllComics, getAllUserComics } from '../../api/getComic'
+import {createArc } from '../../api/createarc'
+import {getAllUserArc } from '../../api/getarc'
 
 import React, { useState, useEffect, useContext } from 'react';
 import { TabBarIcon } from '@/components/navigation/TabBarIcon';
 import { AuthContext } from '../../context/AuthContext';
 
 const personIcon = require('../../assets/images/file.jpg');
-import { TabView, SceneMap } from 'react-native-tab-view';
+
+interface ComicItem {
+  id: { S: string };  // Assuming DynamoDB format where attributes are typed
+  imageURL : string;
+  fullImageURL : string;
+  username: { S: string };
+}
+
+interface ArcItem {
+  id: { S: string };  // Assuming DynamoDB format where attributes are typed
+  coverImageURL: string;
+  imageURL : string[];
+  comicurl : string[];
+  username: { S: string };
+}
 
 interface ImageItem {
   id: string;
   uri: string;
+  url : string;
+  comicURL : string[];
 }
 
-const FirstRoute = () => (
-  <View style={[styles.scene, { backgroundColor: '#ff4081' }]} />
-);
+// const FirstRoute = () => (
+//   <View style={[styles.scene, { backgroundColor: '#ff4081' }]} />
+// );
 
-const SecondRoute = () => (
-  <View style={[styles.scene, { backgroundColor: '#673ab7' }]} />
-);
+// const SecondRoute = () => (
+//   <View style={[styles.scene, { backgroundColor: '#673ab7' }]} />
+// );
 
 const initialLayout = { width: Dimensions.get('window').width };
 
@@ -31,16 +49,16 @@ export default function ProfileScreen() {
 
   const { user } = useContext(AuthContext);
 
-  const [index, setIndex] = React.useState(0);
-  const [routes] = React.useState([
-    { key: 'first', title: 'First' },
-    { key: 'second', title: 'Second' },
-  ]);
+  // const [index, setIndex] = React.useState(0);
+  // const [routes] = React.useState([
+  //   { key: 'first', title: 'First' },
+  //   { key: 'second', title: 'Second' },
+  // ]);
 
-  const renderScene = SceneMap({
-    first: FirstRoute,
-    second: SecondRoute,
-  });
+  // const renderScene = SceneMap({
+  //   first: FirstRoute,
+  //   second: SecondRoute,
+  // });
 
   const fetchData = async () => {
     try {
@@ -69,17 +87,18 @@ export default function ProfileScreen() {
   // useEffect to call fetchData on component mount
   useEffect(() => {
     //Comment it out if you are not testing stories.
-    fetchData();
+  //  fetchData();
   }, []);
 
   const fetchComicData = async () => {
     try {
-      const response = await getAllComics({ username: user });
+      const response = await getAllUserComics({ username: user });
       if (response.success) {
         // Assuming response.data directly contains the imageURLs array
-        const imageItems: ImageItem[] = response.img.map((url: string) => ({
-          id: url,  // Assuming URL is unique and can be used as an ID
-          uri: url,
+        const imageItems: ImageItem[] = response.data.map((item : ComicItem)   => ({
+          id: item.id.S,  // Assuming URL is unique and can be used as an ID
+          uri: item.fullImageURL,  
+          url : item.imageURL,
           username: 'kewalkishang',
           hashtags: ['self', 'new']
         }));
@@ -101,12 +120,41 @@ export default function ProfileScreen() {
   // useEffect to call fetchData on component mount
   useEffect(() => {
     //Comment it out if you are not testing stories.
-    fetchComicData();
+    //fetchComicData();
+  }, []);
+
+  const fetchArcData = async () => {
+    try {
+      const response = await getAllUserArc({ username: user });
+      if (response.success) {
+        // Assuming response.data directly contains the imageURLs array
+        const imageItems: ImageItem[] = response.data.map((item : ArcItem)   => ({
+          id: item.id.S,  // Assuming URL is unique and can be used as an ID
+          uri: item.comicurl[0],  
+          comicURL : item.comicurl,
+          username: 'kewalkishang',
+          hashtags: ['self', 'new']
+        }));
+        console.log(imageItems);
+       setArc(imageItems);
+      } else {
+        console.error("Failed to fetch arc data:", response.message);
+      }
+    } catch (error) {
+      console.error("Failed to fetch arc data:", error);
+    }
+  };
+
+  // useEffect to call fetchData on component mount
+  useEffect(() => {
+    //Comment it out if you are not testing stories.
+    fetchArcData();
   }, []);
 
 
+
   const renderImageItem = ({ item }: { item: ImageItem }) => (
-    <TouchableOpacity onPress={() => handlePressImage(item.uri)} style={activeTab === 'tale' ? styles.taleImage : styles.arcImage}>
+    <TouchableOpacity onPress={() => handlePressImage(item)} style={activeTab === 'tale' ? styles.taleImage : styles.arcImage}>
       <Image
         source={{ uri: item.uri }}
         style={{ flex: 1, height: undefined, width: undefined, resizeMode: 'cover' }}
@@ -151,10 +199,10 @@ export default function ProfileScreen() {
   // ];
 
   const imagesForArc: ImageItem[] = [
-    { id: '1', uri: 'https://cdn.glitch.global/30af1d3b-4338-4f4a-a826-359ed81189cf/uki0lwy-360-panorama-view-park.jpeg?v=1678660202470' },
-    { id: '2', uri: 'https://cdn.glitch.global/30af1d3b-4338-4f4a-a826-359ed81189cf/uki0lwy-360-panorama-view-park.jpeg?v=1678660202470' },
-    { id: '3', uri: 'https://cdn.glitch.global/30af1d3b-4338-4f4a-a826-359ed81189cf/uki0lwy-360-panorama-view-park.jpeg?v=1678660202470' },
-    { id: '4', uri: 'https://cdn.glitch.global/30af1d3b-4338-4f4a-a826-359ed81189cf/uki0lwy-360-panorama-view-park.jpeg?v=1678660202470' },
+    { id: '1', uri: 'https://cdn.glitch.global/30af1d3b-4338-4f4a-a826-359ed81189cf/uki0lwy-360-panorama-view-park.jpeg?v=1678660202470', url : '' , comicURL : []},
+    { id: '2', uri: 'https://cdn.glitch.global/30af1d3b-4338-4f4a-a826-359ed81189cf/uki0lwy-360-panorama-view-park.jpeg?v=1678660202470', url : '', comicURL : [] },
+    { id: '3', uri: 'https://cdn.glitch.global/30af1d3b-4338-4f4a-a826-359ed81189cf/uki0lwy-360-panorama-view-park.jpeg?v=1678660202470' , url : '' , comicURL : []},
+    { id: '4', uri: 'https://cdn.glitch.global/30af1d3b-4338-4f4a-a826-359ed81189cf/uki0lwy-360-panorama-view-park.jpeg?v=1678660202470' , url : ''  , comicURL : []},
   ];
 
 
@@ -162,15 +210,28 @@ export default function ProfileScreen() {
   const [activeTab, setActiveTab] = useState('tale');
   const [modalVisible, setModalVisible] = useState(false);
   const [storiesVisible, setStoriesVisible] = useState(false);
+  const [arcVisible, setArcVisible] = useState(false);
   const [selectedImageUri, setSelectedImageUri] = useState('');
+  const [selectedArcPos, setSelectedArcPos] = useState<string[]>([]);
   const [hasStories, setHasStories] = useState(false);
   const [imgData, setImgData] = useState([]);
   const [imagesForStories, setImagesForStories] = useState<ImageItem[]>([]);
   const [imagesForTale, setImagesForTale] = useState<ImageItem[]>([]);
+  const [arc, setArc] = useState<ImageItem[]>([]);
 
-  const handlePressImage = (uri: string) => {
-    setSelectedImageUri(uri);
-    setModalVisible(true);
+  const handlePressImage = (item :ImageItem) => {
+   
+    if(activeTab === 'tale')
+    {
+       setModalVisible(true);
+       setSelectedImageUri(item.uri);
+    }
+    else{
+      console.log(item.comicURL);
+      setSelectedArcPos(item.comicURL);
+      setArcVisible(true);
+      
+    }
   };
 
 
@@ -238,11 +299,21 @@ export default function ProfileScreen() {
         </View>
         </View>
         <View style={styles.contentContainer}>
-  <Text>{activeTab === 'tale' ? 'Tale View' : 'Arc View'}</Text>
+        {
+          activeTab === 'tale' && imagesForTale.length > 0 &&
+          <TouchableOpacity
+            style={{}}
+            onPress={() => createArc({ username: user, stories: imgData, imgData : imagesForTale })}
+          >
+            <Text style={styles.tabText}>Create ARC</Text>
+          </TouchableOpacity>
+
+        }
+  {/* <Text>{activeTab === 'tale' ? 'Tale View' : 'Arc View'}</Text> */}
   <View style={styles.contentContainer}>
               <FlatList
                 key={activeTab}
-                data={activeTab === 'tale' ? imagesForTale : imagesForArc}
+                data={activeTab === 'tale' ? imagesForTale : arc}
                 renderItem={renderImageItem}
                 keyExtractor={item => `${activeTab}-${item.id}`}
                 numColumns={3}
@@ -250,15 +321,37 @@ export default function ProfileScreen() {
               </View>
 </View>
 
-          {/* <View style={styles.contentContainer}>
-              <FlatList
-                key="tale"
-                data={imagesForTale}
-                renderItem={renderImageItem}
-                keyExtractor={item => `tale-${item.id}`}
-                numColumns={3}
-              />
-          </View> */}
+
+
+<Modal
+            animationType="slide"
+            transparent={true}
+            visible={arcVisible}
+            onRequestClose={() => {
+              setArcVisible(!arcVisible);
+            }}
+          >
+            <View style={styles.centeredView}>
+              <View style={styles.modalView}>
+              <ScrollView
+                horizontal={true}
+                showsHorizontalScrollIndicator={false} // Hides the horizontal scroll indicators
+                style={styles.scrollView}
+            >
+                {selectedArcPos.map((uri, index) => (
+                <Image key={index} source={{ uri}} style={styles.fullImage} />
+                ))}
+                </ScrollView>
+         
+                <TouchableOpacity
+                  style={styles.buttonClose}
+                  onPress={() => setArcVisible(false)}
+                >
+                  <Text style={styles.textStyle}>Arc Close</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </Modal>
 
 
      
@@ -354,6 +447,10 @@ export default function ProfileScreen() {
         scene: {
           flex: 1,
   },
+  scrollView: {
+    display: 'flex',
+    flexDirection: 'row',
+},
         statsContainer: {
           flexDirection: 'row',
         justifyContent: 'space-around',
