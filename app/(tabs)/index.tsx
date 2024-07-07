@@ -38,7 +38,7 @@ interface PostItem {
 // Get the full width of the device screen
 const { width, height } = Dimensions.get('window');
 
-const topImage = require("../../assets/images/comic.jpg");
+const topImage = require("../../assets/images/topImage.jpg");
 
 
 export default function HomeScreen() {
@@ -107,10 +107,10 @@ export default function HomeScreen() {
             <Text style={styles.text}>12</Text>
           </TouchableOpacity>
  
-          <TouchableOpacity onPress={() => handleComment(item.id)} style={{ alignItems : 'center' }}>
+          {/* <TouchableOpacity onPress={() => handleComment(item.id)} style={{ alignItems : 'center' }}>
             <TabBarIcon name="chatbubble-outline" color="black" size={32}/>
             <Text style={styles.text}>2</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
         </View>
       </View>
@@ -194,8 +194,8 @@ export default function HomeScreen() {
     },
     topContainer: {
       width: '100%',
-      height: '8%',
-      paddingVertical: 10,
+      height: '10%',
+      paddingVertical: 2,
       backgroundColor: 'white',
       justifyContent: "flex-start"
     }
