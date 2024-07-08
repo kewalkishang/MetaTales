@@ -1,50 +1,34 @@
-# Welcome to your Expo app 👋
+# StoryToons
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+[Demo](https://youtu.be/cv9Q89-YLYc)
 
-## Get started
+Ever wished you could step into the world of comics like Calvin and Hobbes, Garfield, or your favorite Manga? Imagine being the star of your own comic strip, or even better, crafting your unique stories into engaging comic adventures. Welcome to Meta Tales, where your imagination takes center stage! Dive in and create comic strips that bring your stories to life like never before.
 
-1. Install dependencies
 
-   ```bash
-   npm install
-   ```
-
-2. Start the app
-
-   ```bash
-    npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+## Inspiration
+ 
+Our journey began with a simple yet powerful theme: 'Inspiring creativity using Generative AI'. During our brainstorming sessions, we fondly remembered a beloved comic book from our childhood called Supandi, which we eagerly awaited every Sunday with the newspaper back home in India. This nostalgic memory sparked an idea in our minds: wouldn't it be amazing if we could transform our vacation memories or everyday moments into personalized comics?
+ 
+## What it does
+ 
+Our application allows users to take their posted stories and effortlessly convert them into vibrant comics. These comics are then showcased on their profile. From the collection of comic pages, users can create their very own comic books, turning their life moments into a visual storytelling experience.
+ 
+## How we built it
+ 
+We developed the mobile app using React Native, integrating OpenAI API keys along with AWS cloud services to handle data storage and processing. Specifically, we utilized DynamoDB for database management, Lambda functions for serverless compute services, and API Gateway for creating and maintaining APIs. This combination ensured our application was scalable, efficient, and responsive.
+ 
+## Challenges we ran into
+ 
+One of our biggest challenges was managing and storing vast amounts of data. We had to determine the necessary data requirements and the most suitable cloud-based services. After thorough research, we decided to use DynamoDB and S3, which provided the scalability and reliability we needed. Additionally, we faced significant hurdles with the OpenAI API. There were instances where the API failed, and the generated images did not meet our expectations. This required extensive prompt engineering to fine-tune the prompts and achieve the desired output quality.
+ 
+## Accomplishments that we're proud of
+ 
+We are immensely proud of completing this project on time with just the two of us on the team. Moreover, we take great pride in the unique and creative idea we brought to life, which combines technology and creativity in an engaging way.
+ 
+## What we learned
+ 
+Throughout this project, we gained valuable insights into mobile app development, various generative AI models, and their functionalities. We also learned the significance of an intuitive and appealing UI in enhancing user experience. Furthermore, we delved deep into cloud services, understanding the nuances of DynamoDB, Lambda functions, and API Gateway, which were crucial for our application’s infrastructure.
+ 
+## What's next for Storytoons
+ 
+Our future plans for Storytoons include upgrading the feature from creating comics from images to generating comics from videos, enabling a richer storytelling experience. Additionally, we aim to handle the creation of comics for stories involving multiple users, allowing collaborative storytelling. We also plan to incorporate world-building elements, enabling users to create detailed and immersive worlds within their comics.
