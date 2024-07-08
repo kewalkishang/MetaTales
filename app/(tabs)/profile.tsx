@@ -357,7 +357,7 @@ export default function ProfileScreen() {
                 data={arc}
                 renderItem={renderImageItem}
                 keyExtractor={item => `${activeTab}-${item.id}`}
-                numColumns={1}
+                numColumns={2}
               />
               </View>
       }
@@ -600,16 +600,17 @@ export default function ProfileScreen() {
         justifyContent: 'space-between',
   },
         taleImage: {
-          width: '33%', // slightly less than one-third
+        width: '33%', // slightly less than one-third
         height: 100,
         resizeMode:'contain',
         marginBottom: 10,
   },
         arcImage: {
-          width: '100%', // slightly less than one-third
+          width: '50%', // slightly less than one-third
           height: 200,
           resizeMode:'contain',
-          marginBottom: 10,
+          // marginBottom: 10,
+          padding: 3
 
   },
   noPostsContainer: {
