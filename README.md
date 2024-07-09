@@ -1,6 +1,6 @@
 # StoryToons
 
-[Demo](https://youtu.be/cv9Q89-YLYc)
+[Demo Video](https://youtu.be/cv9Q89-YLYc)
 
 Ever wished you could step into the world of comics like Calvin and Hobbes, Garfield, or your favorite Manga? Imagine being the star of your own comic strip, or even better, crafting your unique stories into engaging comic adventures. Welcome to Meta Tales, where your imagination takes center stage! Dive in and create comic strips that bring your stories to life like never before.
 
@@ -13,6 +13,7 @@ Our journey began with a simple yet powerful theme: 'Inspiring creativity using 
  
 Our application allows users to take their posted stories and effortlessly convert them into vibrant comics. These comics are then showcased on their profile. From the collection of comic pages, users can create their very own comic books, turning their life moments into a visual storytelling experience.
 
+* Sample comic strip generated for the uploaded stories and character : Rainbow Penguin with a bowtie
 ![](example.png)
 
  
