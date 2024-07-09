@@ -12,6 +12,9 @@ Our journey began with a simple yet powerful theme: 'Inspiring creativity using 
 ## What it does
  
 Our application allows users to take their posted stories and effortlessly convert them into vibrant comics. These comics are then showcased on their profile. From the collection of comic pages, users can create their very own comic books, turning their life moments into a visual storytelling experience.
+
+![](example.png)
+
  
 ## How we built it
  
